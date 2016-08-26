@@ -14,7 +14,8 @@ ALL_STACKS:=base-notebook \
 	scipy-notebook \
 	datascience-notebook \
 	pyspark-notebook \
-	all-spark-notebook
+	all-spark-notebook \
+	pims-notebook
 
 ALL_IMAGES:=$(ALL_STACKS)
 

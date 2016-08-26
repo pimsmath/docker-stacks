@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 # Debian Jessie image released 2016 May 03.
-FROM debian@sha256:32a225e412babcd54c0ea777846183c61003d125278882873fb2bc97f9057c51
+FROM debian@sha256:6ba15e1753eb0e05c32983df8e379ebe0af382319726369cd8a37f9aeae60e08
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
@@ -65,9 +65,6 @@ RUN cd /tmp && \
     $CONDA_DIR/bin/conda config --system --set auto_update_conda false && \
     conda clean -tipsy
 
-# Temporary workaround for https://github.com/jupyter/docker-stacks/issues/210
-# Stick with jpeg 8 to avoid problems with R packages
-RUN echo "jpeg 8*" >> /opt/conda/conda-meta/pinned
 
 # Install Jupyter notebook as jovyan
 RUN conda install --quiet --yes \
@@ -75,7 +72,7 @@ RUN conda install --quiet --yes \
     && conda clean -tipsy
 
 # Install JupyterHub to get the jupyterhub-singleuser startup script
-RUN pip --no-cache-dir install 'jupyterhub==0.5'
+RUN pip --no-cache-dir install 'jupyterhub==0.6'
 
 USER root
 
