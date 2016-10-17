@@ -18,8 +18,8 @@ USER $NB_USER
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
 RUN conda install --quiet --yes \
-    'ipywidgets=5.1*' \
-    'pandas=0.18*' \
+    'ipywidgets=5.2*' \
+    'pandas=0.19*' \
     'numexpr=2.5*' \
     'matplotlib=1.5*' \
     'scipy=0.17*' \
@@ -48,8 +48,8 @@ RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
 # use notebook-friendly backends in these images
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'ipython=4.2*' \
-    'ipywidgets=5.1*' \
-    'pandas=0.18*' \
+    'ipywidgets=5.2*' \
+    'pandas=0.19*' \
     'numexpr=2.5*' \
     'matplotlib=1.5*' \
     'scipy=0.17*' \
@@ -73,6 +73,10 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
 # Add shortcuts to distinguish pip for python2 and python3 envs
 RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
     ln -s $CONDA_DIR/bin/pip $CONDA_DIR/bin/pip3
+
+# Import matplotlib the first time to build the font cache.
+ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
+RUN MPLBACKEND=Agg $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 
 # Configure ipython kernel to use matplotlib inline backend by default
 RUN mkdir -p $HOME/.ipython/profile_default/startup
