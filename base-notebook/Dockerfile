@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 # Debian Jessie image released 2016 May 03.
-FROM debian@sha256:6ba15e1753eb0e05c32983df8e379ebe0af382319726369cd8a37f9aeae60e08
+FROM debian@sha256:50b497ebd726cf455d0e04e71b4153e39c4e538d5ac649aef92a7351791895b8
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
