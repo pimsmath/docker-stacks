@@ -71,10 +71,11 @@ RUN cd /tmp && \
 # Install Jupyter notebook as jovyan
 RUN conda install --quiet --yes \
     'notebook=4.2*' \
+    'jupyterhub=0.7' \
     && conda clean -tipsy
 
 # Install JupyterHub to get the jupyterhub-singleuser startup script
-RUN pip --no-cache-dir install 'jupyterhub==0.6'
+#RUN pip --no-cache-dir install 'jupyterhub==0.6'
 
 USER root
 
