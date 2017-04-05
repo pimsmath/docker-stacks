@@ -11,6 +11,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     fonts-dejavu \
     gfortran \
+    gnupg2 \
+    dirmngr \
     gcc && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -20,7 +22,7 @@ RUN echo "deb http://ppa.launchpad.net/staticfloat/juliareleases/ubuntu trusty m
     apt-get update && \
     apt-get install -y --no-install-recommends \
     julia \
-    libnettle4 && apt-get clean && \
+    libnettle6 && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 USER $NB_USER

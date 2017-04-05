@@ -1,9 +1,8 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-# Debian Jessie debootstrap from 2017-02-27
-# https://github.com/docker-library/official-images/commit/aa5973d0c918c70c035ec0746b8acaec3a4d7777
-FROM debian@sha256:52af198afd8c264f1035206ca66a5c48e602afb32dc912ebf9e9478134601ec4
+# Debian Jessie image released 2016 May 03.
+FROM debian@sha256:9994bd617ce6a50f2ec9eb32cd557accead5e8007ef4ca47986163ed4bcd2c2b
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
@@ -13,7 +12,7 @@ USER root
 # features (e.g., download as all possible file formats)
 ENV DEBIAN_FRONTEND noninteractive
 RUN REPO=http://cdn-fastly.deb.debian.org \
- && echo "deb $REPO/debian jessie main\ndeb $REPO/debian-security jessie/updates main" > /etc/apt/sources.list \
+ && echo "deb $REPO/debian testing main\ndeb $REPO/debian-security testing/updates main" > /etc/apt/sources.list \
  && apt-get update && apt-get -yq dist-upgrade \
  && apt-get install -yq --no-install-recommends \
     wget \

@@ -20,7 +20,9 @@ ALL_STACKS:=base-notebook \
 	tensorflow-notebook \
 	datascience-notebook \
 	pyspark-notebook \
-	all-spark-notebook
+	all-spark-notebook \
+	julia-notebook \
+	pims-notebook
 endif
 
 ALL_IMAGES:=$(ALL_STACKS)
