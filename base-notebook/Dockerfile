@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 # Debian Jessie image released 2016 May 03.
-FROM debian@sha256:50b497ebd726cf455d0e04e71b4153e39c4e538d5ac649aef92a7351791895b8
+FROM debian@sha256:9994bd617ce6a50f2ec9eb32cd557accead5e8007ef4ca47986163ed4bcd2c2b
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
@@ -68,8 +68,9 @@ RUN cd /tmp && \
 
 # Install Jupyter Notebook and Hub
 RUN conda install --quiet --yes \
-    'notebook=4.3*' \
-    jupyterhub=0.7 \
+    'notebook=4.4.*' \
+    'jupyterhub=0.7.*' \
+    'jupyterlab=0.17.*' \
     && conda clean -tipsy
 
 USER root
