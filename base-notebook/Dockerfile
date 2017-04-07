@@ -1,8 +1,8 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-# Debian Jessie image released 2016 May 03.
-FROM debian@sha256:9994bd617ce6a50f2ec9eb32cd557accead5e8007ef4ca47986163ed4bcd2c2b
+# Debian Testing image released 2017 Mar 21.
+FROM debian@sha256:fb7d000762691812059057bf478c3d490ea1e0a31341f413a2e36cde27212544
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
