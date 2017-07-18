@@ -11,8 +11,8 @@
 * Scala 2.11.x
 * pyspark, pandas, matplotlib, scipy, seaborn, scikit-learn pre-installed for Python
 * ggplot2, rcurl preinstalled for R
-* Spark 2.0.2 with Hadoop 2.7 for use in local mode or to connect to a cluster of Spark workers
-* Mesos client 0.25 binary that can communicate with a Mesos master
+* Spark 2.1.1 with Hadoop 2.7 for use in local mode or to connect to a cluster of Spark workers
+* Mesos client 1.2 binary that can communicate with a Mesos master
 * spylon-kernel
 * Unprivileged user `jovyan` (uid=1000, configurable, see options) in group `users` (gid=100) with ownership over `/home/jovyan` and `/opt/conda`
 * [tini](https://github.com/krallin/tini) as the container entrypoint and [start-notebook.sh](../base-notebook/start-notebook.sh) as the default command
@@ -124,8 +124,8 @@ conf = pyspark.SparkConf()
 # point to mesos master or zookeeper entry (e.g., zk://10.10.10.10:2181/mesos)
 conf.setMaster("mesos://10.10.10.10:5050")
 # point to spark binary package in HDFS or on local filesystem on all slave
-# nodes (e.g., file:///opt/spark/spark-2.0.2-bin-hadoop2.7.tgz)
-conf.set("spark.executor.uri", "hdfs://10.10.10.10/spark/spark-2.0.2-bin-hadoop2.7.tgz")
+# nodes (e.g., file:///opt/spark/spark-2.1.1-bin-hadoop2.7.tgz)
+conf.set("spark.executor.uri", "hdfs://10.10.10.10/spark/spark-2.1.1-bin-hadoop2.7.tgz")
 # set other options as desired
 conf.set("spark.executor.memory", "8g")
 conf.set("spark.core.connection.ack.wait.timeout", "1200")
@@ -157,10 +157,10 @@ library(SparkR)
 # point to mesos master or zookeeper entry (e.g., zk://10.10.10.10:2181/mesos)\
 # as the first argument
 # point to spark binary package in HDFS or on local filesystem on all slave
-# nodes (e.g., file:///opt/spark/spark-2.0.2-bin-hadoop2.7.tgz) in sparkEnvir
+# nodes (e.g., file:///opt/spark/spark-2.1.1-bin-hadoop2.7.tgz) in sparkEnvir
 # set other options in sparkEnvir
 sc <- sparkR.session("mesos://10.10.10.10:5050", sparkEnvir=list(
-    spark.executor.uri="hdfs://10.10.10.10/spark/spark-2.0.2-bin-hadoop2.7.tgz",
+    spark.executor.uri="hdfs://10.10.10.10/spark/spark-2.1.1-bin-hadoop2.7.tgz",
     spark.executor.memory="8g"
     )
 )
@@ -183,7 +183,7 @@ The Apache Toree kernel automatically creates a `SparkContext` when it starts ba
 For instance, to pass information about a Mesos master, Spark binary location in HDFS, and an executor options, you could start the container like so:
 
 `docker run -d -p 8888:8888 -e SPARK_OPTS '--master=mesos://10.10.10.10:5050 \
-    --spark.executor.uri=hdfs://10.10.10.10/spark/spark-2.0.2-bin-hadoop2.7.tgz \
+    --spark.executor.uri=hdfs://10.10.10.10/spark/spark-2.1.1-bin-hadoop2.7.tgz \
     --spark.executor.memory=8g' jupyter/all-spark-notebook`
 
 Note that this is the same information expressed in a notebook in the Python case above. Once the kernel spec has your cluster information, you can test your cluster in an Apache Toree notebook like so:
@@ -208,7 +208,7 @@ Connection to Spark Cluster on Standalone Mode requires the following set of ste
 
 ## Notebook Options
 
-The Docker container executes a [`start-notebook.sh` script](../base-notebook/start-notebook.sh) script by default. The `start-notebook.sh` script handles the `NB_UID` and `GRANT_SUDO` features documented in the next section, and then executes the `jupyter notebook`.
+The Docker container executes a [`start-notebook.sh` script](../base-notebook/start-notebook.sh) script by default. The `start-notebook.sh` script handles the `NB_UID`, `NB_GID` and `GRANT_SUDO` features documented in the next section, and then executes the `jupyter notebook`.
 
 You can pass [Jupyter command line options](https://jupyter.readthedocs.io/en/latest/projects/jupyter-command.html) through the `start-notebook.sh` script when launching the container. For example, to secure the Notebook server with a custom password hashed ([how-to](http://jupyter-notebook.readthedocs.io/en/latest/public_server.html#preparing-a-hashed-password)) instead of the default token, run the following:
 
@@ -236,6 +236,7 @@ You may customize the execution of the Docker container and the command it is ru
 
 * `-e GEN_CERT=yes` - Generates a self-signed SSL certificate and configures Jupyter Notebook to use it to accept encrypted HTTPS connections.
 * `-e NB_UID=1000` - Specify the uid of the `jovyan` user. Useful to mount host volumes with specific file ownership. For this option to take effect, you must run the container with `--user root`. (The `start-notebook.sh` script will `su jovyan` after adjusting the user id.)
+* `-e NB_GID=100` - Specify the gid of the `jovyan` user. Useful to mount host volumes with specific file ownership. For this option to take effect, you must run the container with `--user root`. (The `start-notebook.sh` script will `su jovyan` after adjusting the group id.)
 * `-e GRANT_SUDO=yes` - Gives the `jovyan` user passwordless `sudo` capability. Useful for installing OS packages. For this option to take effect, you must run the container with `--user root`. (The `start-notebook.sh` script will `su jovyan` after adding `jovyan` to sudoers.) **You should only enable `sudo` if you trust the user or if the container is running on an isolated host.**
 * `-v /some/host/folder/for/work:/home/jovyan/work` - Host mounts the default working directory on the host to preserve work even when the container is destroyed and recreated (e.g., during an upgrade).
 
