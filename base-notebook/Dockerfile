@@ -1,8 +1,8 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-# Debian Testing image released 2017 Mar 21.
-FROM debian@sha256:fb7d000762691812059057bf478c3d490ea1e0a31341f413a2e36cde27212544
+# Debian stable-slim from June 20th 2017
+FROM debian@sha256:f1d24dbc8e66536c0579bc06e4dde5eaffd39716a06db739746ef322ef357650
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
@@ -12,7 +12,7 @@ USER root
 # features (e.g., download as all possible file formats)
 ENV DEBIAN_FRONTEND noninteractive
 RUN REPO=http://cdn-fastly.deb.debian.org \
- && echo "deb $REPO/debian testing main\ndeb $REPO/debian-security testing/updates main" > /etc/apt/sources.list \
+ && echo "deb $REPO/debian stretch main\ndeb $REPO/debian-security stretch/updates main" > /etc/apt/sources.list \
  && apt-get update && apt-get -yq dist-upgrade \
  && apt-get install -yq --no-install-recommends \
     wget \
