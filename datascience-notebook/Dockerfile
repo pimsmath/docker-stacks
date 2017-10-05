@@ -18,23 +18,20 @@ RUN apt-get update && \
 # install Julia packages in /opt/julia instead of $HOME
 ENV JULIA_PKGDIR=/opt/julia
 
-RUN echo "deb http://ppa.launchpad.net/staticfloat/juliareleases/ubuntu trusty main" > /etc/apt/sources.list.d/julia.list && \
+RUN . /etc/os-release && \
+    echo "deb http://ppa.launchpad.net/staticfloat/juliareleases/ubuntu $VERSION_CODENAME main" > /etc/apt/sources.list.d/julia.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3D3D3ACC && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-    julia \
-<<<<<<< HEAD
-    libnettle6 && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-=======
-    libnettle4 && apt-get clean && \
+    julia && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     # Show Julia where conda libraries are \
     echo "push!(Libdl.DL_LOAD_PATH, \"$CONDA_DIR/lib\")" >> /usr/etc/julia/juliarc.jl && \
     # Create JULIA_PKGDIR \
     mkdir $JULIA_PKGDIR && \
-    chown -R $NB_USER:users $JULIA_PKGDIR
->>>>>>> master
+    chown $NB_USER $JULIA_PKGDIR && \
+    fix-permissions $JULIA_PKGDIR
 
 USER $NB_USER
 
@@ -56,7 +53,9 @@ RUN conda config --system --add channels r && \
     'r-caret=6.0*' \
     'r-rcurl=1.95*' \
     'r-crayon=1.3*' \
-    'r-randomforest=4.6*' && conda clean -tipsy
+    'r-randomforest=4.6*' && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 
 # Add Julia packages
 # Install IJulia as jovyan and then move the kernelspec out
@@ -76,5 +75,6 @@ RUN julia -e 'Pkg.init()' && \
     # move kernelspec out of home \
     mv $HOME/.local/share/jupyter/kernels/julia* $CONDA_DIR/share/jupyter/kernels/ && \
     chmod -R go+rx $CONDA_DIR/share/jupyter && \
-    rm -rf $HOME/.local
+    rm -rf $HOME/.local && \
+    fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
 

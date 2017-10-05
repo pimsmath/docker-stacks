@@ -5,13 +5,13 @@
 
 ## What it Gives You
 
-* Jupyter Notebook 4.3.x
-* Conda Python 3.x and Python 2.7.x environments
+* Jupyter Notebook 5.1.x
+* Conda Python 3.x environment
 * Conda R 3.3.x environment
 * Scala 2.11.x
 * pyspark, pandas, matplotlib, scipy, seaborn, scikit-learn pre-installed for Python
 * ggplot2, rcurl preinstalled for R
-* Spark 2.1.1 with Hadoop 2.7 for use in local mode or to connect to a cluster of Spark workers
+* Spark 2.2.0 with Hadoop 2.7 for use in local mode or to connect to a cluster of Spark workers
 * Mesos client 1.2 binary that can communicate with a Mesos master
 * spylon-kernel
 * Unprivileged user `jovyan` (uid=1000, configurable, see options) in group `users` (gid=100) with ownership over `/home/jovyan` and `/opt/conda`
@@ -124,8 +124,8 @@ conf = pyspark.SparkConf()
 # point to mesos master or zookeeper entry (e.g., zk://10.10.10.10:2181/mesos)
 conf.setMaster("mesos://10.10.10.10:5050")
 # point to spark binary package in HDFS or on local filesystem on all slave
-# nodes (e.g., file:///opt/spark/spark-2.1.1-bin-hadoop2.7.tgz)
-conf.set("spark.executor.uri", "hdfs://10.10.10.10/spark/spark-2.1.1-bin-hadoop2.7.tgz")
+# nodes (e.g., file:///opt/spark/spark-2.2.0-bin-hadoop2.7.tgz)
+conf.set("spark.executor.uri", "hdfs://10.10.10.10/spark/spark-2.2.0-bin-hadoop2.7.tgz")
 # set other options as desired
 conf.set("spark.executor.memory", "8g")
 conf.set("spark.core.connection.ack.wait.timeout", "1200")
@@ -157,10 +157,10 @@ library(SparkR)
 # point to mesos master or zookeeper entry (e.g., zk://10.10.10.10:2181/mesos)\
 # as the first argument
 # point to spark binary package in HDFS or on local filesystem on all slave
-# nodes (e.g., file:///opt/spark/spark-2.1.1-bin-hadoop2.7.tgz) in sparkEnvir
+# nodes (e.g., file:///opt/spark/spark-2.2.0-bin-hadoop2.7.tgz) in sparkEnvir
 # set other options in sparkEnvir
 sc <- sparkR.session("mesos://10.10.10.10:5050", sparkEnvir=list(
-    spark.executor.uri="hdfs://10.10.10.10/spark/spark-2.1.1-bin-hadoop2.7.tgz",
+    spark.executor.uri="hdfs://10.10.10.10/spark/spark-2.2.0-bin-hadoop2.7.tgz",
     spark.executor.memory="8g"
     )
 )
@@ -183,7 +183,7 @@ The Apache Toree kernel automatically creates a `SparkContext` when it starts ba
 For instance, to pass information about a Mesos master, Spark binary location in HDFS, and an executor options, you could start the container like so:
 
 `docker run -d -p 8888:8888 -e SPARK_OPTS '--master=mesos://10.10.10.10:5050 \
-    --spark.executor.uri=hdfs://10.10.10.10/spark/spark-2.1.1-bin-hadoop2.7.tgz \
+    --spark.executor.uri=hdfs://10.10.10.10/spark/spark-2.2.0-bin-hadoop2.7.tgz \
     --spark.executor.memory=8g' jupyter/all-spark-notebook`
 
 Note that this is the same information expressed in a notebook in the Python case above. Once the kernel spec has your cluster information, you can test your cluster in an Apache Toree notebook like so:
@@ -238,7 +238,7 @@ You may customize the execution of the Docker container and the command it is ru
 * `-e NB_UID=1000` - Specify the uid of the `jovyan` user. Useful to mount host volumes with specific file ownership. For this option to take effect, you must run the container with `--user root`. (The `start-notebook.sh` script will `su jovyan` after adjusting the user id.)
 * `-e NB_GID=100` - Specify the gid of the `jovyan` user. Useful to mount host volumes with specific file ownership. For this option to take effect, you must run the container with `--user root`. (The `start-notebook.sh` script will `su jovyan` after adjusting the group id.)
 * `-e GRANT_SUDO=yes` - Gives the `jovyan` user passwordless `sudo` capability. Useful for installing OS packages. For this option to take effect, you must run the container with `--user root`. (The `start-notebook.sh` script will `su jovyan` after adding `jovyan` to sudoers.) **You should only enable `sudo` if you trust the user or if the container is running on an isolated host.**
-* `-v /some/host/folder/for/work:/home/jovyan/work` - Host mounts the default working directory on the host to preserve work even when the container is destroyed and recreated (e.g., during an upgrade).
+* `-v /some/host/folder/for/work:/home/jovyan/work` - Mounts a host machine directory as folder in the container. Useful when you want to preserve notebooks and other work even after the container is destroyed. **You must grant the within-container notebook user or group (`NB_UID` or `NB_GID`) write access to the host directory (e.g., `sudo chown 1000 /some/host/folder/for/work`).**
 
 ## SSL Certificates
 
@@ -270,48 +270,20 @@ For additional information about using SSL, see the following:
 * The [Jupyter Notebook documentation](https://jupyter-notebook.readthedocs.io/en/latest/public_server.html#using-ssl-for-encrypted-communication) for best practices about running a public notebook server in general, most of which are encoded in this image.
 
 
-
 ## Conda Environments
 
-The default Python 3.x [Conda environment](http://conda.pydata.org/docs/using/envs.html) resides in `/opt/conda`. A second Python 2.x Conda environment exists in `/opt/conda/envs/python2`. You can [switch to the python2 environment](http://conda.pydata.org/docs/using/envs.html#change-environments-activate-deactivate) in a shell by entering the following:
+The default Python 3.x [Conda environment](http://conda.pydata.org/docs/using/envs.html) resides in `/opt/conda`. 
+
+The commands `jupyter`, `ipython`, `python`, `pip`, and `conda` (among others) are available in both environments. For convenience, you can install packages into either environment regardless of what environment is currently active using commands like the following:
 
 ```
-source activate python2
-```
-
-You can return to the default environment with this command:
-
-```
-source deactivate
-```
-
-The commands `jupyter`, `ipython`, `python`, `pip`, `easy_install`, and `conda` (among others) are available in both environments. For convenience, you can install packages into either environment regardless of what environment is currently active using commands like the following:
-
-```
-# install a package into the python2 environment
-pip2 install some-package
-conda install -n python2 some-package
-
 # install a package into the default (python 3.x) environment
-pip3 install some-package
-conda install -n python3 some-package
+pip install some-package
+conda install some-package
 ```
+
 
 ## Alternative Commands
-
-### start-singleuser.sh
-
-[JupyterHub](https://jupyterhub.readthedocs.io) requires a single-user instance of the Jupyter Notebook server per user.   To use this stack with JupyterHub and [DockerSpawner](https://github.com/jupyter/dockerspawner), you must specify the container image name and override the default container run command in your `jupyterhub_config.py`:
-
-```python
-# Spawn user containers from this image
-c.DockerSpawner.container_image = 'jupyter/all-spark-notebook'
-
-# Have the Spawner override the Docker run command
-c.DockerSpawner.extra_create_kwargs.update({
-	'command': '/usr/local/bin/start-singleuser.sh'
-})
-```
 
 ### start.sh
 
@@ -321,7 +293,13 @@ The `start.sh` script supports the same features as the default `start-notebook.
 docker run -it --rm jupyter/all-spark-notebook start.sh ipython
 ```
 
-This script is particularly useful when you derive a new Dockerfile from this image and install additional Jupyter applications with subcommands like `jupyter console`, `jupyter kernelgateway`, and `jupyter lab`.
+Or, to run JupyterLab instead of the classic notebook, run the following:
+
+```
+docker run -it --rm -p 8888:8888 jupyter/all-spark-notebook start.sh jupyter lab
+```
+
+This script is particularly useful when you derive a new Dockerfile from this image and install additional Jupyter applications with subcommands like `jupyter console`, `jupyter kernelgateway`, etc.
 
 ### Others
 
