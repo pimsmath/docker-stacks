@@ -46,6 +46,7 @@ RUN conda config --add channels r && \
     'r-caret=6.0*' \
     'r-rcurl=1.95*' \
     'r-crayon=1.3*' \
+    'r-tidyverse' \
     'r-randomforest=4.6*' && conda clean -tipsy
 
 RUN echo "deb http://www.deb-multimedia.org stretch main non-free" >> /etc/apt/sources.list
@@ -58,6 +59,11 @@ RUN conda install --yes pyqt \
   beautifulsoup4 \
   html5lib \
   mpld3 \
+  gmaps \
+  tensorflow \
+  keras \
+  atlas \
+  lapack \
   nltk && \
   conda clean -tipsy
 
@@ -81,6 +87,8 @@ RUN conda install -y -n $CONDA_PY2ENV pyqt \
 RUN bash -c "$CONDA_ACTIVATE_PY2 && pip install git+https://github.com/simpeg/simpeg.git"
 
 ADD Rprofile.site /opt/conda/lib/R/etc/Rprofile.site
+
+RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
 
 USER root
 

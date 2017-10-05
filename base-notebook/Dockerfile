@@ -1,8 +1,8 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
-# Debian stable-slim from June 20th 2017
-FROM debian@sha256:f1d24dbc8e66536c0579bc06e4dde5eaffd39716a06db739746ef322ef357650
+# Debian stable-slim from September 8th 2017 - Ian Allison (see docker-library/repo-info tag-details.md)
+FROM debian@sha256:f139bfcffb98f23a5977fcabed83ef32147e1e86d00d539c66f96ce757939a6f
 
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
