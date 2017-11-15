@@ -1,7 +1,7 @@
 # Build as jupyterhub/singleuser
 # Run with the DockerSpawner in JupyterHub
 
-FROM jupyter/scipy-notebook
+FROM jupyter/julia-notebook
 
 MAINTAINER Ian Allison <iana@pims.math.ca>
 
