@@ -2,12 +2,13 @@
 # Distributed under the terms of the Modified BSD License.
 FROM jupyter/pyspark-notebook
 
-MAINTAINER Jupyter Project <jupyter@googlegroups.com>
+LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 USER root
 
 # RSpark config
 ENV R_LIBS_USER $SPARK_HOME/R/lib
+RUN fix-permissions $R_LIBS_USER
 
 # R pre-requisites
 RUN apt-get update && \
