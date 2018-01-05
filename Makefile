@@ -20,6 +20,7 @@ ALL_STACKS:=base-notebook \
 	pyspark-notebook \
 	all-spark-notebook \
 	julia-notebook \
+	pims-minimal \
 	pims-notebook
 endif
 
