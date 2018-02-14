@@ -68,8 +68,34 @@ def test_sudo(container):
         command=['start.sh', 'sudo', 'id']
     )
     rv = c.wait(timeout=10)
-    assert rv == 0
+    assert rv == 0 or rv["StatusCode"] == 0
     assert 'uid=0(root)' in c.logs(stdout=True).decode('utf-8')
+
+
+def test_sudo_path(container):
+    """Container should include /opt/conda/bin in the sudo secure_path."""
+    c = container.run(
+        tty=True,
+        user='root',
+        environment=['GRANT_SUDO=yes'],
+        command=['start.sh', 'sudo', 'which', 'jupyter']
+    )
+    rv = c.wait(timeout=10)
+    assert rv == 0 or rv["StatusCode"] == 0
+    assert c.logs(stdout=True).decode('utf-8').rstrip().endswith('/opt/conda/bin/jupyter')
+
+
+def test_sudo_path_without_grant(container):
+    """Container should include /opt/conda/bin in the sudo secure_path."""
+    c = container.run(
+        tty=True,
+        user='root',
+        command=['start.sh', 'which', 'jupyter']
+    )
+    rv = c.wait(timeout=10)
+    assert rv == 0 or rv["StatusCode"] == 0
+    assert c.logs(stdout=True).decode('utf-8').rstrip().endswith('/opt/conda/bin/jupyter')
+
 
 def test_group_add(container, tmpdir):
     """Container should run with the specified uid, gid, and secondary
@@ -81,5 +107,5 @@ def test_group_add(container, tmpdir):
         command=['start.sh', 'id']
     )
     rv = c.wait(timeout=5)
-    assert rv == 0
+    assert rv == 0 or rv["StatusCode"] == 0
     assert 'uid=1010 gid=1010 groups=1010,100(users)' in c.logs(stdout=True).decode('utf-8')
