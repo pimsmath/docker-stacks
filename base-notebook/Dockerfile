@@ -7,9 +7,6 @@ FROM debian@sha256:49eb885c1667754577a63f0121a6ec079068eca66388e03214c23a843b5dd
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
-
-LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
-
 USER root
 
 # Install all OS dependencies for notebook server that starts but lacks all
