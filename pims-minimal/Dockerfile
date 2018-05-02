@@ -6,19 +6,26 @@ RUN conda install --yes astropy \
   atlas \
   boto \
   beautifulsoup4 \
+  cartopy \
+  geos \
   gfortran_linux-64 \
   gmp \
   gmaps \
   keras \
   html5lib \
+  imageio \
   lapack \
   markdown \
   mpfr \
   mpld3 \
   nltk \
+  pandas=0.22* \
+  proj4 \
   pyqt \
+  pysal \
   tensorflow \
   lxml && \
+  conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
 
 RUN conda install --yes -c damianavila82 rise && \
@@ -59,7 +66,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN REPO="http://www.deb-multimedia.org stretch main non-free" \
  && echo "deb $REPO stretch main non-free" >> /etc/apt/sources.list \
- && apt-key adv --keyserver pgp.mit.edu --recv-keys 65558117 \
+ && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 65558117 \
  && apt-get update && apt-get install -y ffmpeg && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
