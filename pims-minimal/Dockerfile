@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook
+FROM callysto/scipy-notebook
 
 MAINTAINER Ian Allison <iana@pims.math.ca>
 
@@ -83,4 +83,4 @@ COPY notebook.html /opt/notebook/local_templates/notebook.html
 COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN mkdir -p /home/$NB_USER/.config/matplotlib \
-  && echo "backend: Agg" >> /home/$NB_USER/.config/matplotlib/matplotlibrc 
+  && echo "backend: Agg" >> /home/$NB_USER/.config/matplotlib/matplotlibrc
