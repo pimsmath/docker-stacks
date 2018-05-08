@@ -4,7 +4,7 @@
 
 # Use bash for inline if-statements in arch_patch target
 SHELL:=bash
-OWNER:=jupyter
+OWNER:=callysto
 ARCH:=$(shell uname -m)
 
 # Need to list the images in build dependency order
@@ -13,13 +13,7 @@ ALL_STACKS:=base-notebook
 else
 ALL_STACKS:=base-notebook \
 	minimal-notebook \
-	r-notebook \
 	scipy-notebook \
-	tensorflow-notebook \
-	datascience-notebook \
-	pyspark-notebook \
-	all-spark-notebook \
-	julia-notebook \
 	pims-minimal \
 	pims-r
 endif
@@ -67,4 +61,7 @@ test/%: ## run tests against a stack
 	@TEST_IMAGE="$(OWNER)/$(notdir $@)" pytest test
 
 test/base-notebook: ## test supported options in the base notebook
+	@TEST_IMAGE="$(OWNER)/$(notdir $@)" pytest test base-notebook/test
+
+test/pims-r: ## re-run the base notebook tests in the pims-r container to ensure tests still pass
 	@TEST_IMAGE="$(OWNER)/$(notdir $@)" pytest test base-notebook/test
