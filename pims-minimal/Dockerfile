@@ -7,6 +7,8 @@ RUN conda install --yes astropy \
   boto \
   beautifulsoup4 \
   cartopy \
+  colorlover \
+  cvxopt \
   geos \
   gfortran_linux-64 \
   gmp \
@@ -20,10 +22,14 @@ RUN conda install --yes astropy \
   mpld3 \
   nltk \
   pandas=0.22* \
+  plotly \
   proj4 \
   pyqt \
   pysal \
+  qgrid \
+  rdflib \
   tensorflow \
+  textblob \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
