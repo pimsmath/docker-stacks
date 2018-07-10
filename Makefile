@@ -4,7 +4,7 @@
 
 # Use bash for inline if-statements in arch_patch target
 SHELL:=bash
-OWNER:=jupyter
+OWNER:=callysto
 ARCH:=$(shell uname -m)
 
 # Need to list the images in build dependency order
@@ -13,15 +13,10 @@ ALL_STACKS:=base-notebook
 else
 ALL_STACKS:=base-notebook \
 	minimal-notebook \
-	r-notebook \
 	scipy-notebook \
-	tensorflow-notebook \
-	datascience-notebook \
-	pyspark-notebook \
-	all-spark-notebook \
-	julia-notebook \
 	pims-minimal \
-	pims-r
+	pims-r \
+	callysto-swift
 endif
 
 ALL_IMAGES:=$(ALL_STACKS)
@@ -68,3 +63,17 @@ test/%: ## run tests against a stack
 
 test/base-notebook: ## test supported options in the base notebook
 	@TEST_IMAGE="$(OWNER)/$(notdir $@)" pytest test base-notebook/test
+
+test/pims-r: ## re-run the base notebook tests in the pims-r container to ensure tests still pass
+	@TEST_IMAGE="$(OWNER)/$(notdir $@)" pytest test base-notebook/test
+
+test/callysto-swift: ## ignore tests for swiftfs since it requires a functional swift environment
+	@echo ""
+
+callysto/push: ## push callysto images to docker hub
+	docker push callysto/base-notebook
+	docker push callysto/minimal-notebook
+	docker push callysto/scipy-notebook
+	docker push callysto/pims-minimal
+	docker push callysto/pims-r
+	docker push callysto/callysto-swift

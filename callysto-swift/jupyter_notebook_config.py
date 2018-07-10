@@ -7,6 +7,9 @@ import os
 import errno
 import stat
 
+from s3contents import SwiftContentsManager
+import s3contents
+
 c = get_config()
 
 if 'JUPYTERHUB_API_TOKEN' not in os.environ:
@@ -38,3 +41,13 @@ if 'JUPYTERHUB_API_TOKEN' not in os.environ:
         c.NotebookApp.certfile = pem_file
 
 c.NotebookApp.extra_template_paths = ["/opt/notebook/local_templates/"]
+
+c.NotebookApp.contents_manager_class = SwiftContentsManager
+c.SwiftContentsManager.auth_url = os.environ.get("OS_AUTH_URL", "")
+c.SwiftContentsManager.username = os.environ.get("OS_USERNAME", "")
+c.SwiftContentsManager.project_name = os.environ.get("OS_PROJECT_NAME", "")
+c.SwiftContentsManager.password = os.environ.get("OS_PASSWORD", "")
+c.SwiftContentsManager.user_domain_name = os.environ.get("OS_USER_DOMAIN_NAME", "")
+c.SwiftContentsManager.project_domain_name = os.environ.get("OS_PROJECT_DOMAIN_NAME", "")
+c.SwiftContentsManager.region_name = os.environ.get("OS_REGION_NAME", "")
+c.SwiftContentsManager.container = os.environ.get("JPYNB_SWIFT_CONTAINER", "")

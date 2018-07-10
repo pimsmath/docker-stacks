@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook
+FROM callysto/scipy-notebook
 
 MAINTAINER Ian Allison <iana@pims.math.ca>
 
@@ -7,6 +7,8 @@ RUN conda install --yes astropy \
   boto \
   beautifulsoup4 \
   cartopy \
+  colorlover \
+  cvxopt \
   geos \
   gfortran_linux-64 \
   gmp \
@@ -20,10 +22,14 @@ RUN conda install --yes astropy \
   mpld3 \
   nltk \
   pandas=0.22* \
+  plotly \
   proj4 \
   pyqt \
   pysal \
+  qgrid \
+  rdflib \
   tensorflow \
+  textblob \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
@@ -76,11 +82,11 @@ ENV SHELL /bin/bash
 
 COPY systemuser.sh /srv/singleuser/systemuser.sh
 
-CMD ["sh", "/srv/singleuser/systemuser.sh"]
+CMD ["bash", "/srv/singleuser/systemuser.sh"]
 
 RUN mkdir -p /opt/notebook/local_templates && mkdir -p /etc/jupyter
 COPY notebook.html /opt/notebook/local_templates/notebook.html
 COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN mkdir -p /home/$NB_USER/.config/matplotlib \
-  && echo "backend: Agg" >> /home/$NB_USER/.config/matplotlib/matplotlibrc 
+  && echo "backend: Agg" >> /home/$NB_USER/.config/matplotlib/matplotlibrc
