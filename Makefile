@@ -7,6 +7,9 @@ SHELL:=bash
 OWNER:=callysto
 ARCH:=$(shell uname -m)
 
+# Get the current git commit hash
+COMMIT := $$(git log -1 --pretty=%h)
+
 # Need to list the images in build dependency order
 ifeq ($(ARCH),ppc64le)
 ALL_STACKS:=base-notebook
@@ -20,10 +23,6 @@ ALL_STACKS:=base-notebook \
 endif
 
 ALL_IMAGES:=$(ALL_STACKS)
-
-ifeq ($(COMMIT),)
-	COMMIT := latest
-endif
 
 help:
 # http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -76,9 +75,18 @@ test/callysto-swift: ## ignore tests for swiftfs since it requires a functional 
 	@echo ""
 
 callysto/push: ## push callysto images to docker hub
-	docker push callysto/base-notebook
-	docker push callysto/minimal-notebook
-	docker push callysto/scipy-notebook
-	docker push callysto/pims-minimal
-	docker push callysto/pims-r
+ifndef DOCKER_USERNAME
+	$(error DOCKER_USERNAME is not set)
+endif
+
+ifndef DOCKER_PASSWORD
+	$(error DOCKER_PASSWORD is not set)
+endif
+
+	@docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) ; \
+	docker push callysto/base-notebook ; \
+	docker push callysto/minimal-notebook ; \
+	docker push callysto/scipy-notebook ; \
+	docker push callysto/pims-minimal ; \
+	docker push callysto/pims-r ; \
 	docker push callysto/callysto-swift
