@@ -20,6 +20,7 @@ RUN conda install --yes astropy \
   markdown \
   mpfr \
   mpld3 \
+  nbval \
   nltk \
   pandas=0.22* \
   plotly \
