@@ -22,7 +22,7 @@ RUN conda install --yes astropy \
   mpld3 \
   nbval \
   nltk \
-  pandas=0.22* \
+  pandas \
   plotly \
   proj4 \
   pyqt \
@@ -36,7 +36,7 @@ RUN conda install --yes astropy \
   conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
 
-RUN conda install --yes -c damianavila82 rise && \
+RUN conda install --yes -c conda-forge rise && \
   conda clean -tipsy
 
 COPY requirements.txt /tmp/requirements.txt
@@ -46,7 +46,7 @@ RUN pip install -r /tmp/requirements.txt
 RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
 RUN jupyter lab build
 
-RUN pip install git+https://github.com/data-8/nbgitpuller \
+RUN pip install nbgitpuller \
  && jupyter serverextension enable --sys-prefix nbgitpuller
 
 RUN mkdir -p /home/$NB_USER/.config/matplotlib \
@@ -54,7 +54,7 @@ RUN mkdir -p /home/$NB_USER/.config/matplotlib \
 
 USER root
 # fetch juptyerhub-singleuser entrypoint
-RUN wget -q https://raw.githubusercontent.com/jupyterhub/jupyterhub/0.8.1/scripts/jupyterhub-singleuser -O /usr/local/bin/jupyterhub-singleuser && \
+RUN wget -q https://raw.githubusercontent.com/jupyterhub/jupyterhub/0.9.2/scripts/jupyterhub-singleuser -O /usr/local/bin/jupyterhub-singleuser && \
     chmod 755 /usr/local/bin/jupyterhub-singleuser
 
 RUN apt-get update && apt-get install -y \
