@@ -27,8 +27,6 @@ define(function(require){
             // #repo is defined in html_page()
             Jupyter.repoPull = $('#repo').val();
 
-            // If you want to use this on a different hub, this should be the only thing you
-            // have to change. 
             // TODO: Probably grab the hub.callysto bit from the Jupyter info 
             // so this is general to any hub?
             var url_head = "https://hub.callysto.ca/jupyter/hub/user-redirect/git-pull?";
@@ -49,6 +47,7 @@ define(function(require){
             
             // First, check if the user has entered a github link
             var rep_info = gh.gh(Jupyter.repoPull);
+            console.log(rep_info)
             if(rep_info.host != 'github.com'){
                 var message = "Unfortunately the address ";
                 message = message + Jupyter.repoPull;
@@ -56,6 +55,8 @@ define(function(require){
                 alert(message);
                 return;
             };      
+
+            
             // Now we check if the git link they've supplied exits, if it does
             // run the nbgitpuller stuff
             function urlExists(url, successCallback) {
@@ -81,11 +82,23 @@ define(function(require){
                 // If the link exists, I guess we can make the nbgitpuller link
 
                 // If git link isn't a repository, tell the user
+                var bad_link = "The git address\n " + Jupyter.repoPull + "\nis not a repository"
+                
                 if (rep_info.repo == null){
-                    alert("The git address\n " + Jupyter.repoPull + "\nis not a repository.")
+                    alert(bad_link + ".")
                     return
                 };
-               
+                // This is a search, don't want it
+                if(rep_info.search != null){
+                    alert(bad_link + ", and looks like it might be a search result. ")
+                    return
+                }
+                // This is a query result, don't want it
+                if(rep_info.query != null){
+                    alert(bad_link + ", and looks like it might be a search")
+                    return
+                }
+                
                 var repo = "https://" + rep_info.hostname + "/" + rep_info.repo ;
                 var subPath = rep_info.filepath;
                 var git_pull = url_head + "repo=" + repo + "&branch="+ rep_info.branch ;
@@ -94,6 +107,8 @@ define(function(require){
                     git_pull = git_pull + "&subPath=" + subPath;
                 };
                 // open nbgitpuller link in a new tab
+                
+             
                 var win = window.open(git_pull, "_blank");
                 win.focus();
 
