@@ -1,3 +1,5 @@
+import Pkg
+
 metadata_packages = [
     "BinDeps",
     "Cairo",
@@ -16,6 +18,7 @@ metadata_packages = [
     "GraphLayout",
     "HDF5",
     "HypothesisTests",
+    "IJulia",
     "Ipopt",
     "JSON",
     "KernelDensity",
@@ -42,21 +45,14 @@ metadata_packages = [
     "Sundials",
     "TextAnalysis",
     "TimeSeries",
-    "ZipFile"]
-
-
-Pkg.init()
-Pkg.update()
+    "ZipFile",
+    "ZMQ"
+]
 
 for package=metadata_packages
     Pkg.add(package)
 end
 
-# need to build XGBoost version for it to work
-Pkg.clone("https://github.com/antinucleon/XGBoost.jl.git")
-Pkg.build("XGBoost")
-
-Pkg.clone("https://github.com/benhamner/MachineLearning.jl")
-Pkg.pin("MachineLearning")
-
-Pkg.resolve()
+for package=metadata_packages
+    Pkg.precompile(package)
+end
