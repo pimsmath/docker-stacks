@@ -19,7 +19,7 @@ ALL_STACKS:=base-notebook \
 	scipy-notebook \
 	pims-minimal \
 	pims-r \
-	callysto-swift
+	pims-julia
 endif
 
 ALL_IMAGES:=$(ALL_STACKS)
