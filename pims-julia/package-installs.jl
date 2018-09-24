@@ -44,3 +44,5 @@ metadata_packages = [
 
 Pkg.add(metadata_packages)
 precompile
+
+using IJulia

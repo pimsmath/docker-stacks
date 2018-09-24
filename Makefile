@@ -18,7 +18,6 @@ ALL_STACKS:=base-notebook \
 	minimal-notebook \
 	scipy-notebook \
 	pims-minimal \
-	pims-r \
 	pims-julia
 endif
 
