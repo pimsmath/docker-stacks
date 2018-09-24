@@ -15,7 +15,6 @@ metadata_packages = [
     "Distributions",
     "Distances",
     "GLM",
-    "GraphLayout",
     "HDF5",
     "HypothesisTests",
     "IJulia",
@@ -23,36 +22,25 @@ metadata_packages = [
     "JSON",
     "KernelDensity",
     "Lazy",
-    "Lora",
     "MLBase",
     "MultivariateStats",
     "NLopt",
-    "NMF",
     "Optim",
     "ODE",
-    "Patchwork",
     "PDMats",
     "PGFPlots",
     "Plots",
     "PyCall",
     "PyPlot",
-    "Quandl",
     "QuantEcon",
     "RDatasets",
     "SQLite",
     "Stan",
     "StatsBase",
     "Sundials",
-    "TextAnalysis",
-    "TimeSeries",
     "ZipFile",
     "ZMQ"
 ]
 
-for package=metadata_packages
-    Pkg.add(package)
-end
-
-for package=metadata_packages
-    Pkg.precompile(package)
-end
+Pkg.add(metadata_packages)
+precompile

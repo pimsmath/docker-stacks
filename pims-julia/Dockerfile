@@ -1,4 +1,4 @@
-FROM callysto/pims-r
+FROM callysto/pims-minimal
 
 MAINTAINER Ian Allison <iana@pims.math.ca>
 
@@ -118,11 +118,11 @@ ENV HOME=/home/$NB_USER
 USER $NB_USER
 
 ADD package-installs.jl /tmp/package-installs.jl
-RUN JULIA_DEPOT_PATH=/opt/julia-1.0/local/share/julia julia /tmp/package-installs.jl && \
+RUN JULIA_DEPOT_PATH=/opt/julia-1.0/local/share/julia julia /tmp/package-installs.jl
 
 RUN mv $HOME/.local/share/jupyter/kernels/julia-1.0 $CONDA_DIR/share/jupyter/kernels/ \
   && chmod -R go+rx $CONDA_DIR/share/jupyter \
-  && chmod -R go+r /opt/julia-1.0/share/julia/site/lib/v1.0 \
+  && chmod -R go+rx /opt/julia-1.0.0/local/share \
   && rm -rf $HOME/.local
 
 USER jupyter
