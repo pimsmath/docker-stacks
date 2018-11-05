@@ -6,7 +6,7 @@ USER root
 
 # Sundials, NLopt, MPI, Nemo, Cairo
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libsundials-cvode1 \ 
+    libsundials-cvode1 \
     libsundials-cvodes2 \
     libsundials-ida2 \
     libsundials-idas0 \
@@ -101,15 +101,19 @@ RUN mkdir -p /opt/flint2 \
   && make && make install \
   &&  rm -rf /opt/flint2
 
-# Julia 
+# Julia
 RUN mkdir -p /opt/julia-1.0.0 \
   && curl -s -L https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.0-linux-x86_64.tar.gz | \
      tar -C /opt/julia-1.0.0 -x -z --strip-components=1 -f - \
-  && ln -fs /opt/julia-1.0.0 /opt/julia-1.0 \ 
+  && ln -fs /opt/julia-1.0.0 /opt/julia-1.0 \
   && rm -rf /opt/julia && ln -fs /opt/julia-1.0.0 /opt/julia \
   && ln -fs /opt/julia/bin/julia /usr/bin/julia \
   && chown -R jovyan /opt/julia-1.0.0
 
+RUN mkdir -p /opt/julia/environments/v1.0 && mkdir $HOME/.julia
+ADD Manifest.toml /opt/julia/environments/v1.0/
+ADD Project.toml /opt/julia/environments/v1.0/
+RUN chown -R jovyan /opt/julia/environments/
 
 # Install packages as NB_USER
 # Configure environment
@@ -120,14 +124,14 @@ USER $NB_USER
 ADD package-installs.jl /tmp/package-installs.jl
 RUN JULIA_DEPOT_PATH=/opt/julia-1.0/local/share/julia julia /tmp/package-installs.jl
 
-
 RUN mv $HOME/.local/share/jupyter/kernels/julia-1.0 $CONDA_DIR/share/jupyter/kernels/ \
-  && mv /opt/julia/local/share/julia/environments /opt/julia/ \
   && chmod -R go+rx $CONDA_DIR/share/jupyter \
   && chmod -R go+rx /opt/julia/local/share \
   && rm -rf $HOME/.local
 
 ADD startup.jl /opt/julia/etc/julia
+
+RUN mkdir $HOME/.julia && cp -rp /opt/julia/environments $HOME/.julia/
 
 USER jupyter
 # Configure environment
