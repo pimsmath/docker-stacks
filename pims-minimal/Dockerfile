@@ -20,7 +20,6 @@ RUN conda install --yes astropy \
   markdown \
   mpfr \
   mpld3 \
-  'nbconvert=5.4.*' \
   nbval \
   nltk \
   pandas \

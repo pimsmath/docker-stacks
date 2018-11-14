@@ -102,39 +102,33 @@ RUN mkdir -p /opt/flint2 \
   &&  rm -rf /opt/flint2
 
 # Julia
-RUN mkdir -p /opt/julia-1.0.0 \
-  && curl -s -L https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.0-linux-x86_64.tar.gz | \
-     tar -C /opt/julia-1.0.0 -x -z --strip-components=1 -f - \
-  && ln -fs /opt/julia-1.0.0 /opt/julia-1.0 \
-  && rm -rf /opt/julia && ln -fs /opt/julia-1.0.0 /opt/julia \
+RUN mkdir -p /opt/julia-1.0.1 \
+  && curl -s -L https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.1-linux-x86_64.tar.gz | \
+     tar -C /opt/julia-1.0.1 -x -z --strip-components=1 -f - \
+  && ln -fs /opt/julia-1.0.1 /opt/julia-1.0 \
+  && rm -rf /opt/julia && ln -fs /opt/julia-1.0.1 /opt/julia \
   && ln -fs /opt/julia/bin/julia /usr/bin/julia \
-  && chown -R jovyan /opt/julia-1.0.0
-
-RUN mkdir -p /opt/julia/environments/v1.0 && mkdir $HOME/.julia
-ADD Manifest.toml /opt/julia/environments/v1.0/
-ADD Project.toml /opt/julia/environments/v1.0/
-RUN chown -R jovyan /opt/julia/environments/
+  && mkdir -p /opt/julia/environments/v1.0 \
+  && chown -R jovyan /opt/julia-1.0.1
 
 # Install packages as NB_USER
 # Configure environment
-ENV NB_USER=jovyan
-ENV HOME=/home/$NB_USER
+ENV NB_USER=jovyan \
+  NB_UID=1000 \
+  HOME=/home/jovyan
 USER $NB_USER
+WORKDIR /home/jovyan
 
-ADD package-installs.jl /tmp/package-installs.jl
-RUN JULIA_DEPOT_PATH=/opt/julia-1.0/local/share/julia julia /tmp/package-installs.jl
+ADD base-install.jl /tmp/base-install.jl
+ADD vse-install.jl /tmp/vse-install.jl
 
-RUN mv $HOME/.local/share/jupyter/kernels/julia-1.0 $CONDA_DIR/share/jupyter/kernels/ \
-  && chmod -R go+rx $CONDA_DIR/share/jupyter \
-  && chmod -R go+rx /opt/julia/local/share \
-  && rm -rf $HOME/.local
+RUN PYTHON=/opt/conda/bin/python JULIA_DEPOT_PATH=/opt/julia-1.0/local/share/julia julia /tmp/base-install.jl
+RUN PYTHON=/opt/conda/bin/python JULIA_DEPOT_PATH=/opt/julia-1.0/local/share/julia julia /tmp/vse-install.jl
 
+# This should be last to avoid screwing with the jovyan user
 ADD startup.jl /opt/julia/etc/julia
 
-RUN mkdir $HOME/.julia && cp -rp /opt/julia/environments $HOME/.julia/
-
 USER jupyter
-# Configure environment
 ENV NB_USER=jupyter \
     NB_UID=9999
 ENV HOME=/home/$NB_USER

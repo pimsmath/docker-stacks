@@ -1,4 +1,5 @@
-if !isdir(ENV["HOME"] * "/.julia/environments") && isdir("/opt/julia/environments")
-    isdir(ENV["HOME"] * "/.julia") ? true : mkdir(ENV["HOME"] * "/.julia")
-    cp("/opt/julia/environments", ENV["HOME"] * "/.julia/environments")
-end
+envpath = joinpath(ENV["HOME"], ".julia/environments")
+if isdir(envpath) == false 
+	mkpath(envpath) # Make the environment directory 
+	cp("/opt/julia/environments", envpath, force = true)
+end 
