@@ -22,7 +22,7 @@ RUN conda install --yes astropy \
   mpld3 \
   nbval \
   nltk \
-  pandas=0.22* \
+  pandas \
   plotly \
   proj4 \
   pyqt \
@@ -73,11 +73,12 @@ RUN apt-get update && apt-get install -y \
   man git libxrender1 \
   pyqt4-dev-tools \
   gnupg procps && \
+  vim \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
 
 RUN REPO="http://www.deb-multimedia.org stretch main non-free" \
  && echo "deb $REPO stretch main non-free" >> /etc/apt/sources.list \
- && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 65558117 \
+ && apt-key adv --keyserver keyserver.ubuntu.com --no-tty --recv-keys 65558117 \
  && apt-get update && apt-get install -y ffmpeg && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
