@@ -19,25 +19,25 @@ USER $NB_UID
 # use notebook-friendly backends in these images
 RUN conda install --quiet --yes \
     'conda-forge::blas=*=openblas' \
-    'ipywidgets=7.2*' \
+    'ipywidgets=7.4*' \
     'pandas=0.23*' \
     'numexpr=2.6*' \
-    'matplotlib=2.2*' \
+    'matplotlib=3.0*' \
     'scipy=1.1*' \
     'seaborn=0.9*' \
     'scikit-learn=0.20*' \
     'scikit-image=0.14*' \
-    'sympy=1.1*' \
-    'cython=0.28*' \
+    'sympy=1.3*' \
+    'cython=0.29*' \
     'patsy=0.5*' \
     'statsmodels=0.9*' \
-    'cloudpickle=0.5*' \
+    'cloudpickle=0.6*' \
     'dill=0.2*' \
-    'numba=0.38*' \
-    'bokeh=0.13*' \
+    'numba=0.40*' \
+    'bokeh=1.0*' \
     'sqlalchemy=1.2*' \
     'hdf5=1.10*' \
-    'h5py=2.7*' \
+    'h5py=2.8*' \
     'vincent=0.4.*' \
     'beautifulsoup4=4.6.*' \
     'protobuf=3.*' \
