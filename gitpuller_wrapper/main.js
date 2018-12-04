@@ -59,25 +59,29 @@ define(function(require){
             
             // Now we check if the git link they've supplied exits, if it does
             // run the nbgitpuller stuff
+            function logResults(json){
+                console.log(json);
+              }
             function urlExists(url, successCallback) {
                 $.ajax({
                   url: url,
                   dataType: "jsonp",
+                  jsonpCallback:"logResults",
                   statusCode: {
                     200: function(response) {
                       successCallback()
-                      
                     },
                     404: function(response) {
-
                       alert("Unfortunately the gitub link you entered: \n" + url + "\ndoes not exist (error 404)")
                     }
                   }
                 });
               }
             // Asynch test if the repo exists or not, if it does, construct nbgitpuller link
-            // and open it in a new tab
-             urlExists(Jupyter.repoPull, function() {
+            // and open it in a new tab 
+
+            // Need to specify API so you don't get nailed for cross origin calls
+             urlExists("https://api."+Jupyter.repoPull.replace("https://", ''), function() {
                
                 // If the link exists, I guess we can make the nbgitpuller link
 
