@@ -14,7 +14,7 @@ To install this extension follow the instructions below
 
 1. From any directory, clone this repository
 2. Run `jupyter nbextension install gitpuller_wrapper --user`
-3. Run `jupyter nbextension enable gitpuller_wrapper enable --section='common'`
+3. Run `jupyter nbextension enable gitpuller_wrapper/main  --section='common'`
 
 Note the use of the `--section='common'` flag when you enable this extension. 
 
