@@ -9,6 +9,7 @@ RUN conda install --yes astropy \
   cartopy \
   colorlover \
   cvxopt \
+  fuzzywuzzy \
   geos \
   gfortran_linux-64 \
   gmp \
@@ -32,8 +33,12 @@ RUN conda install --yes astropy \
   scrapy \
   tensorflow \
   textblob \
+  tqdm \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
+  conda clean -tipsy
+
+RUN conda install --yes -c ian.e.preston stats_can && \
   conda clean -tipsy
 
 RUN conda install --yes -c damianavila82 rise && \
