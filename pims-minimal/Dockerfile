@@ -24,7 +24,7 @@ RUN conda install --yes astropy \
   mpld3 \
   nbval \
   nltk \
-  pandas=0.22* \
+  pandas \
   plotly \
   proj4 \
   pyqt \
