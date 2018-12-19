@@ -13,10 +13,14 @@ This notebook extension (though maybe not _technically_ a notebook extension) ad
 To install this extension follow the instructions below
 
 1. From any directory, clone this repository
-2. Run `jupyter nbextension install gitpuller_wrapper --user`
-3. Run `jupyter nbextension enable gitpuller_wrapper/main  --section='common'`
+2. Enter `docker-stacks/gitpuller_wrapper` on the `gitpulltab` branch. 
+3. Run `python setup.py install --user`
+    - Note that this also activates and installs the jupyter extensions for you
+    - Also note that you may have to explicitly type `python3` if you have other versions installed
+4. Restart your server
+5. You should now have a tab called "Github Notebooks" in your repo
+6. You may need to allow pop-ups from the site as it will open the git-pull stuff in a second tab. 
 
-Note the use of the `--section='common'` flag when you enable this extension. 
 
 ## Usage
 
