@@ -32,6 +32,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # TODO: Do this in like a pip wheel or someting? I think this might be
+    # what we call "bad practice" 
     os.system("jupyter serverextension enable --py gitpuller_wrapper")
     os.system("jupyter nbextension install --py gitpuller_wrapper --user")
     os.system("jupyter nbextension enable --py gitpuller_wrapper --user")

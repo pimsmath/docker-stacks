@@ -11,6 +11,8 @@ function html_page(){
                 In the text box below you can enter a github link and the contents of that repository will
              be automatically downloaded to your repo. This uses <a href="https://github.com/jupyterhub/nbgitpuller", target="_blank"> 
              nbgitpuller</a> (for notebook git puller) to download new materials from github.
+             <br>
+             Note: You may need to allow pop ups from this site. 
             <br><br>
             
              <div class='input'>
@@ -88,6 +90,8 @@ ModuleNotFoundError: No module named <span style="color: #a31515">&#39;MissingMo
 
             If this doesn't resolve your module not found errors, you may have to consult the <code>README.md</code>
             of the github repository and follow their installation instructions.
+            <br>
+            <br>
         </span>
       </div>
    </div>
