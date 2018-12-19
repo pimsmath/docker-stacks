@@ -12,7 +12,6 @@ define(function(require){
     // grab html stuff
     var page = require('./page_info');
     
-
     // This is a function from page_info.js that dumps the html for the page
     var page_text = html_page()
     
@@ -29,10 +28,8 @@ define(function(require){
             // #repo is defined in html_page()
             Jupyter.repoPull = $('#repo').val();
 
-            // TODO: Probably grab the hub.callysto bit from the Jupyter info 
-            // so this is general to any hub?
-            // var url_head = "https://hub.callysto.ca/jupyter/hub/user-redirect/git-pull?";
-            var url_head = base_url + 'jupyter/hub/user-redirect/git-pull?"';
+            // UPDATE: Should pull to whatever hub you're on now.
+            var url_head = base_url + 'git-pull?';
 
             // if user accidentally enters a blank line, don't do anything
             if (Jupyter.repoPull == ''){
@@ -58,6 +55,9 @@ define(function(require){
             };      
             // Now we check if the git link they've supplied exits, if it does
             // run the nbgitpuller stuff
+
+            // UPDATE: Now we use a server side python do-hickey instead to make it work
+            // now we don't have to worry about browser security updates. 
             function urlExists(url, successCallback) {
                 $.getJSON(utils.get_body_data('baseUrl') + 'ping', $.param({'url': url}), 
                 function(data) {
@@ -75,8 +75,6 @@ define(function(require){
             // and open it in a new tab 
 
              urlExists(Jupyter.repoPull, function() {
-               
-                // If the link exists, I guess we can make the nbgitpuller link
 
                 // If git link isn't a repository, tell the user
                 var bad_link = "The git address\n " + Jupyter.repoPull + "\nis not a repository"
@@ -104,8 +102,6 @@ define(function(require){
                     git_pull = git_pull + "&subPath=" + subPath;
                 };
                 // open nbgitpuller link in a new tab
-                
-             
                 var win = window.open(git_pull, "_blank");
                 win.focus();
 
@@ -123,33 +119,9 @@ define(function(require){
                     window.history.pushState(null, null, '#gitpuller');
                 })
             )
-        );
-       
+        );  
     }
-
-   
-    
     return {
         load_ipython_extension: load,
     };
 });
-
-          // ajax({
-                //   url: url,
-                //   dataType: "jsonp",
-                //   jsonpCallback:"logResults",
-                //   cache: false,
-                //   statusCode: {
-                //     200: function(response) {
-                //       console.log(response)
-                //       //var blob= new Blob([JSON.stringify({a:9})], {type : 'jsonp; charset=UTF-8'});
-                //       console.log(navigator.sendBeacon(url,JSON.stringify({a:9})), "SDFSDFSDFSDF")
-                //      // successCallback()
-                //     },
-                //     404: function(response) {
-                //       console.log(response)
-                //       console.log(navigator.sendBeacon(url), "SDFSDFSDFSDFSDFSDFSDF")
-                //       alert("Unfortunately the gitub link you entered: \n" + url + "\ndoes not exist (error 404)")
-                //     }
-                //   }
-                // });

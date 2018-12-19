@@ -12,7 +12,6 @@ class PingyBoi(IPythonHandler):
         does not exist and crashes. Basically, all we need to do is see
         if we have a valid webpage or not. 
         '''
-        # url ="https://github.com/yuvipanda/nbresuse"
         url = self.get_argument('url')
         request = requests.get(url)
         if request.status_code == 200:
@@ -48,4 +47,4 @@ def load_jupyter_server_extension(nb_server_app):
     route_pattern = url_path_join(web_app.settings['base_url'], '/ping')
     web_app.add_handlers(host_pattern, [(route_pattern, PingyBoi)])
     
-    print("HSDFSKDLJF:SLDKJF:SLKDFJLS:KDJFS:KLDFJ:LSKDFJ:LSKDfj")
+    

@@ -32,6 +32,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-    os.system("jupyter serverextension enable --py gitpuller_wrapper --debug --user")
-    os.system("jupyter nbextension install --py gitpuller_wrapper --debug --user")
-    os.system("jupyter nbextension enable --py gitpuller_wrapper --debug --user")
+    os.system("jupyter serverextension enable --py gitpuller_wrapper")
+    os.system("jupyter nbextension install --py gitpuller_wrapper --user")
+    os.system("jupyter nbextension enable --py gitpuller_wrapper --user")
