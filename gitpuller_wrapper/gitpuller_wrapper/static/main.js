@@ -2,6 +2,8 @@
 // and provide you with a text entry widget that you can paste github links into
 // and use nbgitpuller to bring the repository/notebook into your hub environment.
 
+// TODO: Probably should make sure the user doesn't already have the repo before
+// we pull it 
 
 define(function(require){
     var Jupyter = require('base/js/namespace');
@@ -11,7 +13,7 @@ define(function(require){
     var gh = require('./parse-git');
     // grab html stuff
     var page = require('./page_info');
-    
+
     // This is a function from page_info.js that dumps the html for the page
     var page_text = html_page()
     
