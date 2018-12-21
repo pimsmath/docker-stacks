@@ -4,7 +4,7 @@ from notebook.base.handlers import IPythonHandler
 from notebook.utils import url_path_join
 import requests
 
-class PingyBoi(IPythonHandler):
+class PingHandler(IPythonHandler):
     def get(self):
         '''
         Ping a provided URL and see if it is up. This is a safety 
@@ -45,6 +45,6 @@ def load_jupyter_server_extension(nb_server_app):
     web_app = nb_server_app.web_app
     host_pattern = '.*$'
     route_pattern = url_path_join(web_app.settings['base_url'], '/ping')
-    web_app.add_handlers(host_pattern, [(route_pattern, PingyBoi)])
+    web_app.add_handlers(host_pattern, [(route_pattern, PingHandler)])
     
     

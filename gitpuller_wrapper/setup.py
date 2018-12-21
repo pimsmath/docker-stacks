@@ -11,6 +11,7 @@ def main():
         packages=setuptools.find_packages(),
         install_requires=[
             'notebook',
+            'nbgitpuller',
         ],
         data_files=[
             (

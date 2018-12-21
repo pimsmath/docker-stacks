@@ -56,10 +56,8 @@ define(function(require){
                 return;
             };      
             // Now we check if the git link they've supplied exits, if it does
-            // run the nbgitpuller stuff
+            // run the nbgitpuller stuff via PingHandler 
 
-            // UPDATE: Now we use a server side python do-hickey instead to make it work
-            // now we don't have to worry about browser security updates. 
             function urlExists(url, successCallback) {
                 $.getJSON(utils.get_body_data('baseUrl') + 'ping', $.param({'url': url}), 
                 function(data) {

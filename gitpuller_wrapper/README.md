@@ -13,7 +13,7 @@ This notebook extension (though maybe not _technically_ a notebook extension) ad
 To install this extension follow the instructions below
 
 1. From any directory, clone this repository
-2. Enter `docker-stacks/gitpuller_wrapper` on the `gitpulltab` branch. 
+2. Enter `docker-stacks/gitpuller_wrapper`. 
 3. Run `python setup.py install --user`
     - Note that this also activates and installs the jupyter extensions for you
     - Also note that you may have to explicitly type `python3` if you have other versions installed
