@@ -1,6 +1,7 @@
-FROM callysto/scipy-notebook
+ARG BASE_CONTAINER=callysto/scipy-notebook
+FROM $BASE_CONTAINER
 
-MAINTAINER Ian Allison <iana@pims.math.ca>
+LABEL maintainer="Ian Allison <iana@pims.math.ca>"
 
 RUN conda install --yes astropy \
   atlas \
@@ -9,6 +10,7 @@ RUN conda install --yes astropy \
   cartopy \
   colorlover \
   cvxopt \
+  fuzzywuzzy \
   geos \
   gfortran_linux-64 \
   gmp \
@@ -22,7 +24,7 @@ RUN conda install --yes astropy \
   mpld3 \
   nbval \
   nltk \
-  pandas=0.22* \
+  pandas \
   plotly \
   proj4 \
   pyqt \
@@ -32,8 +34,12 @@ RUN conda install --yes astropy \
   scrapy \
   tensorflow \
   textblob \
+  tqdm \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
+  conda clean -tipsy
+
+RUN conda install --yes -c ian.e.preston stats_can && \
   conda clean -tipsy
 
 RUN conda install --yes -c damianavila82 rise && \
@@ -72,14 +78,8 @@ RUN apt-get update && apt-get install -y \
   less openssh-client zip \
   man git libxrender1 \
   pyqt4-dev-tools \
-  gnupg procps && \
+  gnupg procps vim && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
-
-RUN REPO="http://www.deb-multimedia.org stretch main non-free" \
- && echo "deb $REPO stretch main non-free" >> /etc/apt/sources.list \
- && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 65558117 \
- && apt-get update && apt-get install -y ffmpeg && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
 
 COPY pip.conf /etc/pip.conf
 
