@@ -92,6 +92,7 @@ USER jupyter
 # Configure environment
 ENV NB_USER=jupyter \
     NB_UID=9999
-ENV HOME=/home/$NB_USER
+ENV XDG_CACHE_HOME=/home/$NB_USER/.cache/ \
+    HOME=/home/$NB_USER
 WORKDIR $HOME
 
