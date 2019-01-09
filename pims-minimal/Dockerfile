@@ -76,9 +76,9 @@ RUN apt-get update && apt-get install -y \
   libzmq5-dev \
   libssl-dev \
   less openssh-client zip \
-  man git libxrender1 \
+  man git git-lfs libxrender1 \
   pyqt4-dev-tools \
-  gnupg procps vim && \
+  gnupg procps vim && git lfs install --system && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
 
 COPY pip.conf /etc/pip.conf
