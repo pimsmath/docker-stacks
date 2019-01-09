@@ -78,7 +78,7 @@ RUN apt-get update && apt-get install -y \
   less openssh-client zip \
   man git git-lfs libxrender1 \
   pyqt4-dev-tools \
-  gnupg procps vim && git lfs install --system && \
+  gnupg procps tzdata vim && git lfs install --system && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
 
 COPY pip.conf /etc/pip.conf
@@ -92,6 +92,7 @@ USER jupyter
 # Configure environment
 ENV NB_USER=jupyter \
     NB_UID=9999
-ENV HOME=/home/$NB_USER
+ENV XDG_CACHE_HOME=/home/$NB_USER/.cache/ \
+    HOME=/home/$NB_USER
 WORKDIR $HOME
 
