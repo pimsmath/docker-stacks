@@ -99,19 +99,11 @@ ENV NB_USER=jovyan
 ENV HOME=/home/$NB_USER
 
 USER $NB_USER
-# Set up our QuantEcon environment in the first depot entry for jovyan (~/jovyan/.julia).
-RUN julia -e "using Pkg; pkg\"add IJulia InstantiateFromURL Compat Revise Plots GR Parameters Expectations Distributions DifferentialEquations DiffEqCallbacks\"; pkg\"build\";  pkg\"precompile\""
-RUN julia -e "using Pkg; pkg\"add RDatasets Clustering GLM Optim JuMP Clp NLopt Ipopt ODE Sundials BayesNets PGFPlots Stan Lazy QuantEcon Colors SymPy PyCall HDF5\"; pkg\"build\"; pkg\"precompile\""
-# For mkdirs.
-USER root
-# Grab the master of that.
-RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLecturePackages\")"
-RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLectureAllPackages\")"
-# Others
-RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLecturePackages\", tag = \"v0.9.5\")"
-RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLectureAllPackages\", tag = \"v0.9.5\")"
-# Pre-seeding.
-RUN chown -R jupyter /home/jupyter/
+
+# PyPlot dependency
+RUN conda install pyqt
+
+RUN JULIA_DEPOT_PATH=/opt/julia julia -e "using Pkg; pkg\"add IJulia InstantiateFromURL Compat Revise Plots PyPlot GR Parameters Expectations Distributions DifferentialEquations DiffEqCallbacks RDatasets Clustering GLM Optim JuMP Clp NLopt Ipopt ODE Sundials BayesNets PGFPlots Stan Lazy QuantEcon Colors SymPy PyCall HDF5\"; pkg\"build\"; pkg\"precompile\""
 
 RUN mv $HOME/.local/share/jupyter/kernels/julia-1.0 $CONDA_DIR/share/jupyter/kernels/ \
   && chmod -R go+rx $CONDA_DIR/share/jupyter \
@@ -119,10 +111,9 @@ RUN mv $HOME/.local/share/jupyter/kernels/julia-1.0 $CONDA_DIR/share/jupyter/ker
   # Nuke the registry that came with Julia.
   && rm -rf /opt/julia-1.0.3/local/share/julia/registries \
   # Nuke the registry that Jovyan uses.
-  && rm -rf $HOME/.julia/registries
-
-# Give the user read and execute permissions over /jovyan/.julia.
-RUN chmod -R go+rx /home/jovyan/.julia
+  && rm -rf $HOME/.julia/registries \
+  # Make sure files are readable
+  && chmod go+r -R /opt/julia
 
 # Add a startup.jl to copy
 ADD startup.jl /opt/julia/etc/julia
@@ -134,9 +125,9 @@ ENV NB_USER=jupyter \
 ENV HOME=/home/$NB_USER
 
 # Configure the JULIA_DEPOT_PATH
-ENV JULIA_DEPOT_PATH="/home/jupyter/.julia:/home/jovyan/.julia:/opt/julia"
+ENV JULIA_DEPOT_PATH="/home/jupyter/.julia:/opt/julia"
 RUN julia -e "using Pkg; pkg\"precompile\""
-RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLectureAllPackages\", tag = \"master\")"
-RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLecturePackages\", tag = \"master\")"
+#RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLectureAllPackages\", tag = \"master\")"
+#RUN julia -e "using InstantiateFromURL; activate_github(\"QuantEcon/QuantEconLecturePackages\", tag = \"master\")"
 RUN rm -rf .projects
 

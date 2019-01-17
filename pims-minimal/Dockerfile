@@ -37,7 +37,6 @@ RUN conda install --yes astropy \
   textblob \
   tqdm \
   lxml && \
-  conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
 
 RUN conda install --yes -c ian.e.preston stats_can && \
