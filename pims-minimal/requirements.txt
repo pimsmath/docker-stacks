@@ -9,3 +9,4 @@ unidecode
 cs103
 # Update Aug 15 2018
 fastkml
+qeds

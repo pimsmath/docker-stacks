@@ -22,6 +22,7 @@ RUN conda install --yes astropy \
   markdown \
   mpfr \
   mpld3 \
+  nbconvert \
   nbval \
   nltk \
   pandas \
@@ -36,7 +37,6 @@ RUN conda install --yes astropy \
   textblob \
   tqdm \
   lxml && \
-  conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
 
 RUN conda install --yes -c ian.e.preston stats_can && \
@@ -76,9 +76,9 @@ RUN apt-get update && apt-get install -y \
   libzmq5-dev \
   libssl-dev \
   less openssh-client zip \
-  man git libxrender1 \
+  man git git-lfs libxrender1 \
   pyqt4-dev-tools \
-  gnupg procps vim && \
+  gnupg procps tzdata vim && git lfs install --system && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
 
 COPY pip.conf /etc/pip.conf
@@ -92,6 +92,7 @@ USER jupyter
 # Configure environment
 ENV NB_USER=jupyter \
     NB_UID=9999
-ENV HOME=/home/$NB_USER
+ENV XDG_CACHE_HOME=/home/$NB_USER/.cache/ \
+    HOME=/home/$NB_USER
 WORKDIR $HOME
 
