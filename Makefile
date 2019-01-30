@@ -4,7 +4,7 @@
 
 # Use bash for inline if-statements in arch_patch target
 SHELL:=bash
-OWNER:=callysto
+OWNER:=pimsubc
 ARCH:=$(shell uname -m)
 
 # Get the current git commit hash
