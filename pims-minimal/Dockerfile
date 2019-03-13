@@ -15,6 +15,7 @@ RUN conda install --yes astropy \
   gfortran_linux-64 \
   gmp \
   gmaps \
+  graphviz \
   keras \
   html5lib \
   imageio \
@@ -30,6 +31,7 @@ RUN conda install --yes astropy \
   proj4 \
   pyqt \
   pysal \
+  python-graphviz \
   qgrid \
   rdflib \
   scrapy \
