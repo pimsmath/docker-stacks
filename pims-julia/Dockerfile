@@ -80,18 +80,18 @@ RUN mkdir -p /opt/flint2 \
   &&  rm -rf /opt/flint2
 
 # Julia
-RUN mkdir -p /opt/julia-1.0.3 \
+RUN mkdir -p /opt/julia-1.1.0 \
   # Download and unpack Julia binaries
-  && curl -s -L https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.3-linux-x86_64.tar.gz | \
-     tar -C /opt/julia-1.0.3 -x -z --strip-components=1 -f - \
-  # Make 'julia-1.0' point to julia-1.0.3
-  && ln -fs /opt/julia-1.0.3 /opt/julia-1.0 \
-  # Make 'julia' point to julia-1.0.3
-  && rm -rf /opt/julia && ln -fs /opt/julia-1.0.3 /opt/julia \
-  # Make '/usr/bin/julia' point to our 'julia', which is 'julia-1.0.3'
+  && curl -s -L https://julialang-s3.julialang.org/bin/linux/x64/1.1/julia-1.1.0-linux-x86_64.tar.gz | \
+     tar -C /opt/julia-1.1.0 -x -z --strip-components=1 -f - \
+  # Make 'julia-1.1' point to julia-1.1.0
+  && ln -fs /opt/julia-1.1.0 /opt/julia-1.1 \
+  # Make 'julia' point to julia-1.1.0
+  && rm -rf /opt/julia && ln -fs /opt/julia-1.1.0 /opt/julia \
+  # Make '/usr/bin/julia' point to our 'julia', which is 'julia-1.1.0'
   && ln -fs /opt/julia/bin/julia /usr/bin/julia \
   # Give ownership of that Julia install to 'jovyan', the "shared user."
-  && chown -R jovyan /opt/julia-1.0.3
+  && chown -R jovyan /opt/julia-1.1.0
 
 # Configure our shared environment
 # Switch over to 'jovyan'
@@ -105,11 +105,11 @@ RUN conda install pyqt
 
 RUN JULIA_DEPOT_PATH=/opt/julia julia -e "using Pkg; pkg\"add IJulia InstantiateFromURL Compat Revise Plots PyPlot GR Parameters Expectations Distributions DifferentialEquations DiffEqCallbacks RDatasets Clustering GLM Optim JuMP Clp NLopt Ipopt ODE Sundials BayesNets PGFPlots Stan Lazy QuantEcon Colors SymPy PyCall HDF5\"; pkg\"build\"; pkg\"precompile\""
 
-RUN mv $HOME/.local/share/jupyter/kernels/julia-1.0 $CONDA_DIR/share/jupyter/kernels/ \
+RUN mv $HOME/.local/share/jupyter/kernels/julia-1.1 $CONDA_DIR/share/jupyter/kernels/ \
   && chmod -R go+rx $CONDA_DIR/share/jupyter \
   && rm -rf $HOME/.local \
   # Nuke the registry that came with Julia.
-  && rm -rf /opt/julia-1.0.3/local/share/julia/registries \
+  && rm -rf /opt/julia-1.1.0/local/share/julia/registries \
   # Nuke the registry that Jovyan uses.
   && rm -rf $HOME/.julia/registries \
   # Make sure files are readable
