@@ -47,6 +47,8 @@ RUN conda install --yes -c ian.e.preston stats_can && \
 RUN conda install --yes -c damianavila82 rise && \
   conda clean -tipsy
 
+RUN conda install --yes -c plotly -c r plotlylab
+
 COPY requirements.txt /tmp/requirements.txt
 # And the stuff that isn't in anaconda
 RUN pip install -r /tmp/requirements.txt

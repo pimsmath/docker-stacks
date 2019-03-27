@@ -90,10 +90,10 @@ RUN conda install --quiet --yes 'tini=0.18.0' && \
 # Correct permissions
 # Do all this in a single RUN command to avoid duplicating all of the
 # files across image layers when the permissions change
-RUN conda install --quiet --yes \
-    'notebook=5.7.2' \
+RUN conda install -c plotly -c r --quiet --yes \
+    'notebook=5.7.5' \
     'jupyterhub=0.9.4' \
-    'jupyterlab=0.35.4' && \
+    plotlylab && \
     conda clean -tipsy && \
     jupyter labextension install @jupyterlab/hub-extension@^0.12.0 && \
     npm cache clean --force && \
