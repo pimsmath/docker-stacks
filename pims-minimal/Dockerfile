@@ -30,12 +30,14 @@ RUN conda install --yes astropy \
   proj4 \
   pyqt \
   pysal \
-  qgrid \
   rdflib \
   scrapy \
   tensorflow \
   textblob \
   tqdm \
+  altair \
+  vega=1.4.* \
+  vega_datasets \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
   conda clean -tipsy
