@@ -36,7 +36,7 @@ RUN conda install --yes astropy \
   textblob \
   tqdm \
   altair \
-  vega=1.4.* \
+  vega \
   vega_datasets \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
