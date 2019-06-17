@@ -32,6 +32,7 @@ RUN conda install --yes astropy \
   pysal \
   rdflib \
   scrapy \
+  spacy \
   tensorflow \
   textblob \
   tqdm \
