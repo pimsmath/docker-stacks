@@ -70,6 +70,7 @@ RUN wget -q https://raw.githubusercontent.com/jupyterhub/jupyterhub/0.8.1/script
 RUN apt-get update && apt-get install -y \
   build-essential \
   curl \
+  dvipng \
   fonts-dejavu \
   python-dev \
   hdf5-tools \
