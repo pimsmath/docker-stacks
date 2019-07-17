@@ -41,13 +41,13 @@ RUN conda install --yes astropy \
   vega_datasets \
   lxml && \
   conda remove --quiet --yes --force qt pyqt && \
-  conda clean -tipsy
+  conda clean --all -f -y
 
 RUN conda install --yes -c ian.e.preston stats_can && \
-  conda clean -tipsy
+  conda clean --all -f -y
 
 RUN conda install --yes -c damianavila82 rise && \
-  conda clean -tipsy
+  conda clean --all -f -y
 
 COPY requirements.txt /tmp/requirements.txt
 # And the stuff that isn't in anaconda
@@ -64,8 +64,8 @@ RUN mkdir -p /home/$NB_USER/.config/matplotlib \
 
 USER root
 # fetch juptyerhub-singleuser entrypoint
-RUN wget -q https://raw.githubusercontent.com/jupyterhub/jupyterhub/0.8.1/scripts/jupyterhub-singleuser -O /usr/local/bin/jupyterhub-singleuser && \
-    chmod 755 /usr/local/bin/jupyterhub-singleuser
+#RUN wget -q https://raw.githubusercontent.com/jupyterhub/jupyterhub/1.0.0/scripts/jupyterhub-singleuser -O /usr/local/bin/jupyterhub-singleuser && \
+#    chmod 755 /usr/local/bin/jupyterhub-singleuser
 
 RUN apt-get update && apt-get install -y \
   build-essential \
