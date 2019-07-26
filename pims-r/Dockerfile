@@ -7,6 +7,7 @@ LABEL maintainer="Ian Allison <iana@pims.math.ca>"
 ENV NB_USER=jovyan
 ENV HOME=/home/$NB_USER
 USER $NB_USER
+WORKDIR $HOME
 
 # R
 RUN conda config --add channels r && \
@@ -46,4 +47,4 @@ USER jupyter
 ENV NB_USER=jupyter \
     NB_UID=9999
 ENV HOME=/home/$NB_USER
-
+WORKDIR $HOME

@@ -3,7 +3,8 @@ FROM $BASE_CONTAINER
 
 LABEL maintainer="Ian Allison <iana@pims.math.ca>"
 
-RUN conda install --yes astropy \
+RUN conda install --yes -c anaconda atlas && \
+  conda install --yes astropy \
   atlas \
   boto \
   beautifulsoup4 \
