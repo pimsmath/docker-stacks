@@ -34,6 +34,9 @@ RUN conda install --yes -c anaconda atlas && \
   rdflib \
   scrapy \
   spacy \
+  spacy-model-en_core_web_sm \
+  spacy-model-en_core_web_md \
+  spacy-model-en_core_web_lg \
   tensorflow \
   textblob \
   tqdm \
