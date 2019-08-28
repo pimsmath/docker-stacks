@@ -11,6 +11,7 @@ RUN conda install --yes -c anaconda atlas && \
   cartopy \
   colorlover \
   cvxopt \
+  folium \
   fuzzywuzzy \
   geos \
   gfortran_linux-64 \
