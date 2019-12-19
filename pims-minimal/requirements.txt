@@ -1,9 +1,10 @@
-geopandas
+canvasapi
 latimes-calculate
 pdfdocument
 pivottablejs
 psutil
 pytest
+qeds
 unidecode
 # Update Oct 2nd 2017
 cs103

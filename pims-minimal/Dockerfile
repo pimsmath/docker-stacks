@@ -11,9 +11,11 @@ RUN conda install --yes -c anaconda atlas && \
   cartopy \
   colorlover \
   cvxopt \
+  descartes \
   folium \
   fuzzywuzzy \
   geos \
+  geopandas \
   gfortran_linux-64 \
   gmp \
   gmaps \
@@ -25,14 +27,18 @@ RUN conda install --yes -c anaconda atlas && \
   mpfr \
   mpld3 \
   nbconvert \
+  nbgitpuller \
   nbval \
   nltk \
+  nodejs \
   pandas \
   plotly \
   proj4 \
   pyqt \
   pysal \
+  python-graphviz \
   rdflib \
+  rise \
   scrapy \
   spacy \
   spacy-model-en_core_web_sm \
@@ -51,26 +57,22 @@ RUN conda install --yes -c anaconda atlas && \
 RUN conda install --yes -c ian.e.preston stats_can && \
   conda clean --all -f -y
 
-RUN conda install --yes -c damianavila82 rise && \
-  conda clean --all -f -y
-
 COPY requirements.txt /tmp/requirements.txt
 # And the stuff that isn't in anaconda
 RUN pip install -r /tmp/requirements.txt
 
+RUN jupyter labextension install @jupyterlab/toc --no-build \
+ && jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build \
+ && jupyter labextension install plotlywidget --no-build \
+ && jupyter labextension install jupyterlab-plotly --no-build \
+ && jupyter lab build
 RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
 RUN jupyter lab build
-
-RUN pip install git+https://github.com/data-8/nbgitpuller \
- && jupyter serverextension enable --sys-prefix nbgitpuller
 
 RUN mkdir -p /home/$NB_USER/.config/matplotlib \
   && echo "backend: Agg" >> /home/$NB_USER/.config/matplotlib/matplotlibrc
 
 USER root
-# fetch juptyerhub-singleuser entrypoint
-#RUN wget -q https://raw.githubusercontent.com/jupyterhub/jupyterhub/1.0.0/scripts/jupyterhub-singleuser -O /usr/local/bin/jupyterhub-singleuser && \
-#    chmod 755 /usr/local/bin/jupyterhub-singleuser
 
 RUN apt-get update && apt-get install -y \
   build-essential \
