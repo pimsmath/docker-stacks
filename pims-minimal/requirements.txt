@@ -2,6 +2,7 @@ canvasapi
 latimes-calculate
 pdfdocument
 pivottablejs
+python-dotenv
 psutil
 pytest
 qeds
