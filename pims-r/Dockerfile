@@ -10,8 +10,7 @@ USER $NB_USER
 WORKDIR $HOME
 
 # R
-RUN conda config --add channels r && \
-    conda install --quiet --yes \
+RUN conda install --quiet --yes \
     'gxx_linux-64' \
     'gmp' \
     'mpfr' \
