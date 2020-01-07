@@ -31,6 +31,7 @@ RUN conda install --yes -c anaconda atlas && \
   nbval \
   nltk \
   nodejs \
+  openblas=0.3.6 \
   pandas \
   plotly \
   proj4 \
