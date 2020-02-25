@@ -22,11 +22,13 @@ RUN conda install --quiet --yes \
     'r-devtools=2.2*' \
     'r-dplyr=0.8*' \
     'r-ggplot2=3.2*' \
+    'r-ggally=1.4*' \
+    'r-hmisc=4.2*' \
     'r-tidyr=1.0*' \
     'r-lsmeans' \
     'r-shiny=1.4*' \
-    'r-rmarkdown=2.0*' \
-    'r-forecast=8.10*' \
+    'r-rmarkdown=2.1*' \
+    'r-forecast=8.11*' \
     'r-stringr=1.4*' \
     'r-stringi=1.4*' \
     'r-rsqlite=2.1*' \
@@ -34,7 +36,7 @@ RUN conda install --quiet --yes \
     'r-nycflights13=1.0*' \
     'r-car=3.0*' \
     'r-caret=6.0*' \
-    'r-rcurl=1.95*' \
+    'r-rcurl=1.98*' \
     'r-crayon=1.3*' \
     'r-testthat=2.3*' \
     'r-tidyverse=1.3*' \
