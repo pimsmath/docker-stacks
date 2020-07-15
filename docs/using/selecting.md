@@ -60,10 +60,10 @@ repository. The following sections describe these images including their content
 [tidyr](http://tidyr.tidyverse.org/), [readr](http://readr.tidyverse.org/), [purrr](http://purrr.tidyverse.org/), [tibble](http://tibble.tidyverse.org/),
 [stringr](http://stringr.tidyverse.org/), [lubridate](http://lubridate.tidyverse.org/), and
 [broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html) from [conda-forge](https://conda-forge.github.io/feedstocks)
-* [plyr](https://cran.r-project.org/web/packages/plyr/index.html), [devtools](https://cran.r-project.org/web/packages/devtools/index.html),
+* [devtools](https://cran.r-project.org/web/packages/devtools/index.html),
 [shiny](https://shiny.rstudio.com/), [rmarkdown](http://rmarkdown.rstudio.com/), [forecast](https://cran.r-project.org/web/packages/forecast/forecast.pdf),
-[rsqlite](https://cran.r-project.org/web/packages/RSQLite/index.html), [reshape2](https://cran.r-project.org/web/packages/reshape2/reshape2.pdf),
-[nycflights13](https://cran.r-project.org/web/packages/nycflights13/index.html), [caret](http://topepo.github.io/caret/index.html),
+[rsqlite](https://cran.r-project.org/web/packages/RSQLite/index.html),
+[nycflights13](https://cran.r-project.org/web/packages/nycflights13/index.html), [caret](http://topepo.github.io/caret/index.html), [tidymodels](https://www.tidymodels.org/),
 [rcurl](https://cran.r-project.org/web/packages/RCurl/index.html), and [randomforest](https://cran.r-project.org/web/packages/randomForest/randomForest.pdf)
 packages from [conda-forge](https://conda-forge.github.io/feedstocks)
 
@@ -116,11 +116,10 @@ packages from [conda-forge](https://conda-forge.github.io/feedstocks)
 | [Dockerfile commit history](https://github.com/jupyter/docker-stacks/commits/master/pyspark-notebook/Dockerfile)
 | [Docker Hub image tags](https://hub.docker.com/r/jupyter/pyspark-notebook/tags/)
 
-`jupyter/pyspark-notebook` includes Python support for Apache Spark, optionally on Mesos.
+`jupyter/pyspark-notebook` includes Python support for Apache Spark.
 
 * Everything in `jupyter/scipy-notebook` and its ancestor images
 * [Apache Spark](https://spark.apache.org/) with Hadoop binaries
-* [Mesos](http://mesos.apache.org/) client libraries
 
 ### jupyter/all-spark-notebook
 
@@ -128,7 +127,7 @@ packages from [conda-forge](https://conda-forge.github.io/feedstocks)
 | [Dockerfile commit history](https://github.com/jupyter/docker-stacks/commits/master/all-spark-notebook/Dockerfile)
 | [Docker Hub image tags](https://hub.docker.com/r/jupyter/all-spark-notebook/tags/)
 
-`jupyter/all-spark-notebook` includes Python, R, and Scala support for Apache Spark, optionally on Mesos.
+`jupyter/all-spark-notebook` includes Python, R, and Scala support for Apache Spark.
 
 * Everything in `jupyter/pyspark-notebook` and its ancestor images
 * [IRKernel](https://irkernel.github.io/) to support R code in Jupyter notebooks

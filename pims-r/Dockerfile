@@ -14,24 +14,24 @@ RUN conda install --quiet --yes \
     'gxx_linux-64' \
     'gmp' \
     'mpfr' \
-    'r-base=3.6*' \
-    'r-essentials=3.6*' \
+    'r-base=4.0*' \
+    'r-essentials=4.0*' \
     'r-gmp' \
     'r-irkernel=1.1*' \
     'r-plyr=1.8*' \
-    'r-devtools=2.2*' \
-    'r-dplyr=0.8*' \
-    'r-ggplot2=3.2*' \
-    'r-ggally=1.4*' \
-    'r-hmisc=4.2*' \
-    'r-tidyr=1.0*' \
+    'r-devtools=2.3*' \
+    'r-dplyr=1.0*' \
+    'r-ggplot2=3.3*' \
+    'r-ggally=2.0*' \
+    'r-hmisc=4.4*' \
+    'r-tidyr=1.1*' \
     'r-lsmeans' \
-    'r-shiny=1.4*' \
-    'r-rmarkdown=2.1*' \
-    'r-forecast=8.11*' \
+    'r-shiny=1.5*' \
+    'r-rmarkdown=2.3*' \
+    'r-forecast=8.12*' \
     'r-stringr=1.4*' \
     'r-stringi=1.4*' \
-    'r-rsqlite=2.1*' \
+    'r-rsqlite=2.2*' \
     'r-reshape2=1.4*' \
     'r-nycflights13=1.0*' \
     'r-car=3.0*' \

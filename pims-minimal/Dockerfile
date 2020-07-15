@@ -3,10 +3,8 @@ FROM $BASE_CONTAINER
 
 LABEL maintainer="Ian Allison <iana@pims.math.ca>"
 
-RUN conda install --yes -c anaconda atlas && \
-  conda install --yes astropy \
-  atlas \
-  boto \
+RUN conda install --yes astropy \
+  boto3 \
   beautifulsoup4 \
   cartopy \
   colorlover \
@@ -19,7 +17,6 @@ RUN conda install --yes -c anaconda atlas && \
   gfortran_linux-64 \
   gmp \
   gmaps \
-  keras \
   html5lib \
   imageio \
   lapack \
@@ -31,10 +28,9 @@ RUN conda install --yes -c anaconda atlas && \
   nbval \
   nltk \
   nodejs \
-  openblas=0.3.6 \
+  openblas \
   pandas \
   plotly \
-  proj4 \
   pyqt \
   pysal \
   python-graphviz \
@@ -45,7 +41,6 @@ RUN conda install --yes -c anaconda atlas && \
   spacy-model-en_core_web_sm \
   spacy-model-en_core_web_md \
   spacy-model-en_core_web_lg \
-  tensorflow \
   textblob \
   tqdm \
   altair \
@@ -82,7 +77,7 @@ RUN apt-get update && apt-get install -y \
   fonts-dejavu \
   python-dev \
   hdf5-tools \
-  libhdf5-100 \
+  libhdf5-103 \
   libgmp-dev \
   libmpfr-dev \
   libzmq5 \
@@ -90,7 +85,7 @@ RUN apt-get update && apt-get install -y \
   libssl-dev \
   less openssh-client zip \
   man git libxrender1 \
-  pyqt4-dev-tools \
+  pyqt5-dev-tools \
   gnupg procps tzdata vim && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
 
