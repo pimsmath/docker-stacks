@@ -3,7 +3,9 @@ FROM $BASE_CONTAINER
 
 LABEL maintainer="Ian Allison <iana@pims.math.ca>"
 
-RUN conda install --yes astropy \
+RUN conda install --yes \
+  altair \
+  astropy \
   boto3 \
   beautifulsoup4 \
   cartopy \
@@ -45,7 +47,6 @@ RUN conda install --yes astropy \
   spacy-model-en_core_web_lg \
   textblob \
   tqdm \
-  altair \
   vega \
   vega_datasets \
   lxml && \
@@ -55,8 +56,8 @@ RUN conda install --yes astropy \
 RUN conda install --yes -c ian.e.preston stats_can && \
   conda clean --all -f -y
 
+COPY pip.conf /etc/pip.conf
 COPY requirements.txt /tmp/requirements.txt
-# And the stuff that isn't in anaconda
 RUN pip install -r /tmp/requirements.txt
 
 RUN jupyter labextension install @jupyterlab/toc --no-build \
@@ -90,8 +91,6 @@ RUN apt-get update && apt-get install -y \
   gnupg procps tzdata vim && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && ln -s /bin/tar /bin/gtar
 
-COPY pip.conf /etc/pip.conf
-
 ENV SHELL /bin/bash
 
 COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
@@ -104,4 +103,3 @@ ENV NB_USER=jupyter \
 ENV XDG_CACHE_HOME=/home/$NB_USER/.cache/ \
     HOME=/home/$NB_USER
 WORKDIR $HOME
-
