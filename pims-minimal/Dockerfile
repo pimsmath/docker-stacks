@@ -19,6 +19,8 @@ RUN conda install --yes astropy \
   gmaps \
   html5lib \
   imageio \
+  jupyterlab-git \
+  jupytext \
   lapack \
   markdown \
   mpfr \
@@ -63,7 +65,6 @@ RUN jupyter labextension install @jupyterlab/toc --no-build \
  && jupyter labextension install jupyterlab-plotly --no-build \
  && jupyter lab build
 RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
-RUN jupyter lab build
 
 RUN mkdir -p /home/$NB_USER/.config/matplotlib \
   && echo "backend: Agg" >> /home/$NB_USER/.config/matplotlib/matplotlibrc

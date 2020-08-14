@@ -1,4 +1,5 @@
 canvasapi
+jupyterlab-git
 latimes-calculate
 pdfdocument
 pivottablejs
