@@ -6,7 +6,6 @@
 SHELL:=bash
 OWNER:=pimsubc
 ARCH:=$(shell uname -m)
-DIFF_RANGE?=master...HEAD
 
 # Get the current git commit hash
 COMMIT := $$(git log -1 --pretty=%h)
@@ -27,6 +26,7 @@ ALL_IMAGES:=$(ALL_STACKS)
 
 # Linter
 HADOLINT="${HOME}/hadolint"
+HADOLINT_VERSION="v1.18.0"
 
 help:
 # http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -76,24 +76,38 @@ dev/%: ## run a foreground container for a stack
 	docker run -it --rm -p $(PORT):8888 $(DARGS) $(OWNER)/$(notdir $@) $(ARGS)
 
 dev-env: ## install libraries required to build docs and run tests
-	pip install -r requirements-dev.txt
+	@pip install -r requirements-dev.txt
 
-lint/%: ARGS?=
-lint/%: ## lint the dockerfile(s) for a stack
-	@echo "Linting Dockerfiles in $(notdir $@)..."
-	@git ls-files --exclude='Dockerfile*' --ignored $(notdir $@) | grep -v ppc64 | xargs -L 1 $(HADOLINT) $(ARGS)
-	@echo "Linting done!"
+docs: ## build HTML documentation
+	make -C docs html
 
-lint-all: $(foreach I,$(ALL_IMAGES),lint/$(I) ) ## lint all stacks
+git-commit: LOCAL_PATH?=.
+git-commit: GITHUB_SHA?=$(shell git rev-parse HEAD)
+git-commit: GITHUB_REPOSITORY?=jupyter/docker-stacks
+git-commit: GITHUB_TOKEN?=
+git-commit: ## commit outstading git changes and push to remote
+	@git config --global user.name "GitHub Actions"
+	@git config --global user.email "actions@users.noreply.github.com"
 
-lint-build-test-all: $(foreach I,$(ALL_IMAGES),lint/$(I) arch_patch/$(I) build/$(I) test/$(I) ) ## lint, build and test all stacks
+	@echo "Publishing outstanding changes in $(LOCAL_PATH) to $(GITHUB_REPOSITORY)" 
+	@cd $(LOCAL_PATH) && \
+		git remote add publisher https://$(GITHUB_TOKEN)@github.com/$(GITHUB_REPOSITORY).git && \
+		git checkout master && \
+		git add -A -- . && \
+		git commit -m "[ci skip] Automated publish for $(GITHUB_SHA)" || exit 0
+	@cd $(LOCAL_PATH) && git push -u publisher master
 
-lint-install: ## install hadolint
-	@echo "Installing hadolint at $(HADOLINT) ..."
-	@curl -sL -o $(HADOLINT) "https://github.com/hadolint/hadolint/releases/download/v1.18.0/hadolint-$(shell uname -s)-$(shell uname -m)"
-	@chmod 700 $(HADOLINT)
-	@echo "Installation done!"
-	@$(HADOLINT) --version	
+hook/%: export COMMIT_MSG?=$(shell git log -1 --pretty=%B)
+hook/%: export GITHUB_SHA?=$(shell git rev-parse HEAD)
+hook/%: export WIKI_PATH?=../wiki
+hook/%: ## run post-build hooks for an image
+	BUILD_TIMESTAMP="$$(date -u +%FT%TZ)" \
+	DOCKER_REPO="$(OWNER)/$(notdir $@)" \
+	IMAGE_NAME="$(OWNER)/$(notdir $@):latest" \
+	IMAGE_SHORT_NAME="$(notdir $@)" \
+	$(SHELL) $(notdir $@)/hooks/run_hook
+
+hook-all: $(foreach I,$(ALL_IMAGES),hook/$(I) ) ## run post-build hooks for all images
 
 img-clean: img-rm-dang img-rm ## clean dangling and jupyter images
 
@@ -109,19 +123,39 @@ img-rm-dang: ## remove dangling images (tagged None)
 	@echo "Removing dangling images ..."
 	-docker rmi --force $(shell docker images -f "dangling=true" -q) 2> /dev/null
 
-docs: ## build HTML documentation
-	make -C docs html
+lint/%: ARGS?=
+lint/%: ## lint the dockerfile(s) for a stack
+	@echo "Linting Dockerfiles in $(notdir $@)..."
+	@git ls-files --exclude='Dockerfile*' --ignored $(notdir $@) | grep -v ppc64 | xargs -L 1 $(HADOLINT) $(ARGS)
+	@echo "Linting done!"
 
-n-docs-diff: ## number of docs/ files changed since branch from master
-	@git diff --name-only $(DIFF_RANGE) -- docs/ ':!docs/locale' | wc -l | awk '{print $$1}'
+lint-all: $(foreach I,$(ALL_IMAGES),lint/$(I) ) ## lint all stacks
 
+lint-build-test-all: $(foreach I,$(ALL_IMAGES),lint/$(I) arch_patch/$(I) build/$(I) test/$(I) ) ## lint, build and test all stacks
 
-n-other-diff: ## number of files outside docs/ changed since branch from master
-	@git diff --name-only $(DIFF_RANGE) -- ':!docs/' | wc -l | awk '{print $$1}'
+lint-install: ## install hadolint
+	@echo "Installing hadolint at $(HADOLINT) ..."
+	@curl -sL -o $(HADOLINT) "https://github.com/hadolint/hadolint/releases/download/$(HADOLINT_VERSION)/hadolint-$(shell uname -s)-$(shell uname -m)"
+	@chmod 700 $(HADOLINT)
+	@echo "Installation done!"
+	@$(HADOLINT) --version	
+
+pre-commit-all: ## run pre-commit hook on all files
+	@pre-commit run --all 
+
+pre-commit-install: ## set up the git hook scripts
+	@pre-commit --version
+	@pre-commit install
 
 pull/%: DARGS?=
 pull/%: ## pull a jupyter image
 	docker pull $(DARGS) $(OWNER)/$(notdir $@)
+
+push/%: DARGS?=
+push/%: ## push all tags for a jupyter image
+	docker push $(DARGS) $(OWNER)/$(notdir $@)
+
+push-all: $(foreach I,$(ALL_IMAGES),push/$(I) ) ## push all tagged images
 
 run/%: DARGS?=
 run/%: ## run a bash in interactive mode in a stack
@@ -161,7 +195,7 @@ test/callysto-swift: ## ignore tests for swiftfs since it requires a functional 
 verify/%: ## verify an image works by testing it across several notebooks
 	docker run -it --rm --mount source=$$(pwd)/test-notebooks,target=/test-notebooks,type=bind $(OWNER)/$(notdir $@) bash /test-notebooks/test.sh
 
-callysto/push: ## push callysto images to docker hub
+pimsubc/push: ## push pimsubc images to docker hub
 ifndef DOCKER_USERNAME
 	$(error DOCKER_USERNAME is not set)
 endif
@@ -171,9 +205,9 @@ ifndef DOCKER_PASSWORD
 endif
 
 	@docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) ; \
-	docker push callysto/base-notebook ; \
-	docker push callysto/minimal-notebook ; \
-	docker push callysto/scipy-notebook ; \
-	docker push callysto/pims-minimal ; \
-	docker push callysto/pims-r ; \
-	docker push callysto/callysto-swift
+	docker push $(OWNER)/base-notebook ; \
+	docker push $(OWNER)/minimal-notebook ; \
+	docker push $(OWNER)/scipy-notebook ; \
+	docker push $(OWNER)/pims-minimal ; \
+	docker push $(OWNER)/pims-r ; \
+	docker push $(OWNER)/callysto-swift
