@@ -27,10 +27,10 @@ RUN conda install --quiet --yes \
     'r-tidyr=1.1*' \
     'r-lsmeans' \
     'r-shiny=1.5*' \
-    'r-rmarkdown=2.3*' \
-    'r-forecast=8.12*' \
+    'r-rmarkdown=2.6*' \
+    'r-forecast=8.13*' \
     'r-stringr=1.4*' \
-    'r-stringi=1.4*' \
+    'r-stringi=1.5*' \
     'r-rsqlite=2.2*' \
     'r-reshape2=1.4*' \
     'r-nycflights13=1.0*' \
@@ -38,7 +38,7 @@ RUN conda install --quiet --yes \
     'r-caret=6.0*' \
     'r-rcurl=1.98*' \
     'r-crayon=1.3*' \
-    'r-testthat=2.3*' \
+    'r-testthat=3.0*' \
     'r-tidyverse=1.3*' \
     'r-randomforest=4.6*' && conda clean --all -f -y
 
